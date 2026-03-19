@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Contador de Calorías</string>
+
+    <!-- Navigation -->
+    <string name="nav_diary">Diario</string>
+    <string name="nav_search">Buscar</string>
+    <string name="nav_scan">Escanear</string>
+    <string name="nav_analytics">Análisis</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <!-- Screen titles -->
+    <string name="title_login">Iniciar sesión</string>
+    <string name="title_register">Crear cuenta</string>
+    <string name="title_diary">Diario de hoy</string>
+    <string name="title_search">Buscar alimento</string>
+    <string name="title_scanner">Escáner de código</string>
+    <string name="title_camera_ai">Escáner IA</string>
+    <string name="title_ai_result">Confirmar alimento</string>
+    <string name="title_food_detail">Agregar al diario</string>
+    <string name="title_analytics">Análisis semanal</string>
+    <string name="title_settings">Ajustes</string>
+    <string name="title_goals">Metas diarias</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">Sin conexión a internet</string>
+    <string name="error_request_failed">Error en la solicitud. Intentá de nuevo.</string>
+    <string name="error_server">Error del servidor. Intentá más tarde.</string>
+    <string name="error_timeout">Se agotó el tiempo de conexión</string>
+    <string name="error_ai_timeout">El análisis IA tardó demasiado</string>
+    <string name="error_product_not_found">Producto no encontrado en la base de datos</string>
+    <string name="error_invalid_email">Ingresá un email válido</string>
+    <string name="error_password_short">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_passwords_mismatch">Las contraseñas no coinciden</string>
+    <string name="error_sign_in_failed">Error al iniciar sesión. Verificá tus datos.</string>
+    <string name="error_register_failed">Error al registrarse. Intentá de nuevo.</string>
+    <string name="error_camera_permission">Se requiere acceso a la cámara</string>
+    <string name="error_ai_unrecognized">No se pudo identificar el alimento</string>
+    <string name="error_parse_failed">No se pudo leer la respuesta de IA</string>
+    <string name="error_generic">Algo salió mal</string>
+
+    <!-- Buttons -->
+    <string name="btn_sign_in">Iniciar sesión</string>
+    <string name="btn_sign_in_google">Continuar con Google</string>
+    <string name="btn_register">Crear cuenta</string>
+    <string name="btn_sign_out">Cerrar sesión</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_retry">Intentar de nuevo</string>
+    <string name="btn_add_to_diary">Agregar al diario</string>
+    <string name="btn_open_settings">Abrir ajustes</string>
+    <string name="btn_grant_camera">Dar acceso a cámara</string>
+    <string name="btn_search_manually">Buscar manualmente</string>
+    <string name="btn_enter_manually">Ingresar manualmente</string>
+    <string name="btn_capture">Capturar</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="btn_confirm">Confirmar</string>
+
+    <!-- Empty states -->
+    <string name="empty_diary">Sin entradas. ¡Comenzá a agregar alimentos!</string>
+    <string name="empty_search_results">Sin resultados para \"%s\"</string>
+    <string name="empty_search_hint">Buscá por nombre o marca</string>
+    <string name="empty_analytics">Todavía no hay suficientes datos. Registrá comidas para ver tendencias.</string>
+    <string name="empty_offline_no_cache">Sin datos disponibles sin conexión</string>
+
+    <!-- Settings -->
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_theme_system">Por defecto del sistema</string>
+    <string name="settings_language">Idioma</string>
+    <string name="settings_language_en">Inglés</string>
+    <string name="settings_language_es">Español</string>
+    <string name="settings_goals">Metas diarias</string>
+    <string name="settings_goals_calories">Calorías diarias</string>
+    <string name="settings_goals_protein">Proteínas (g)</string>
+    <string name="settings_goals_carbs">Carbohidratos (g)</string>
+    <string name="settings_goals_fat">Grasas (g)</string>
+    <string name="settings_account">Cuenta</string>
+    <string name="settings_version">Versión de la app</string>
+
+    <!-- Meal types -->
+    <string name="meal_breakfast">Desayuno</string>
+    <string name="meal_lunch">Almuerzo</string>
+    <string name="meal_dinner">Cena</string>
+    <string name="meal_snack">Merienda</string>
+
+    <!-- Search feature -->
+    <string name="search_hint">Buscar alimento...</string>
+    <string name="select_meal">Seleccionar comida</string>
+    <string name="no_results">Sin resultados</string>
+
+    <!-- Add food bottom sheet -->
+    <string name="add_food">Agregar Alimento</string>
+    <string name="search_food">Buscar Alimento</string>
+    <string name="scan_barcode">Escanear Código</string>
+    <string name="ai_recognition">Reconocimiento IA</string>
+
+    <!-- Scanner -->
+    <string name="scanner_hint">Apuntá la cámara al código</string>
+    <string name="product_not_found">Producto no encontrado</string>
+    <string name="scan_again">Escanear de nuevo</string>
+    <string name="camera_permission_required">Se requiere permiso de cámara</string>
+    <string name="grant_permission">Otorgar permiso</string>
+
+    <!-- Labels -->
+    <string name="label_calories">Calorías</string>
+    <string name="label_protein">Proteínas</string>
+    <string name="label_carbs">Carbohidratos</string>
+    <string name="label_fat">Grasas</string>
+    <string name="label_serving_size">Porción</string>
+    <string name="label_servings">Porciones</string>
+    <string name="label_email">Correo electrónico</string>
+    <string name="label_password">Contraseña</string>
+    <string name="label_confirm_password">Confirmar contraseña</string>
+    <string name="label_offline">Sin conexión</string>
+    <string name="label_scanning">Escaneando…</string>
+    <string name="label_analyzing">Analizando imagen…</string>
+    <string name="label_daily_goal">Meta diaria</string>
+    <string name="label_of">de</string>
+    <string name="label_kcal">kcal</string>
+</resources>

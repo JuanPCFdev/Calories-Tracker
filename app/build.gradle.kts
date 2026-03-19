@@ -1,23 +1,22 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
-    namespace = "com.inovisec.caloriestracker"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    namespace = "com.juanpcf.caloriestracker"
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.inovisec.caloriestracker"
+        applicationId = "com.juanpcf.caloriestracker"
         minSdk = 27
         targetSdk = 36
         versionCode = 1
@@ -25,9 +24,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val localProperties = java.util.Properties().also { props ->
+        val localProperties = Properties().also { props ->
             val file = rootProject.file("local.properties")
-            if (file.exists()) props.load(file.inputStream())
+            if (file.exists()) file.inputStream().use(props::load)
         }
         buildConfigField("String", "OPENROUTER_API_KEY", "\"${localProperties["OPENROUTER_API_KEY"] ?: ""}\"")
         buildConfigField("String", "USDA_API_KEY", "\"${localProperties["USDA_API_KEY"] ?: "DEMO_KEY"}\"")
@@ -50,6 +49,9 @@ android {
         compose = true
         buildConfig = true
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 
     room {
         schemaDirectory("$projectDir/schemas")
@@ -65,6 +67,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -35,11 +35,11 @@
 # kotlinx.serialization
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.AnnotationsKt
--keep,includedescriptorclasses class com.inovisec.caloriestracker.**$$serializer { *; }
--keepclassmembers class com.inovisec.caloriestracker.** {
+-keep,includedescriptorclasses class com.juanpcf.caloriestracker.**$$serializer { *; }
+-keepclassmembers class com.juanpcf.caloriestracker.** {
     *** Companion;
 }
--keepclasseswithmembers class com.inovisec.caloriestracker.** {
+-keepclasseswithmembers class com.juanpcf.caloriestracker.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 

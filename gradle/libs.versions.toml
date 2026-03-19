@@ -1,12 +1,13 @@
 [versions]
-agp = "9.1.0"
+agp = "8.13.2"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
-kotlin = "2.2.10"
+kotlin = "2.1.10"
+ksp = "2.1.10-1.0.29"
 composeBom = "2024.09.00"
 coroutines = "1.10.2"
 kotlinxSerializationJson = "1.8.1"
@@ -22,9 +23,10 @@ okhttp = "4.12.0"
 firebaseBom = "33.14.0"
 playServicesAuth = "21.3.0"
 camerax = "1.5.0"
-mlkitBarcode = "18.3.1"
+mlkitBarcode = "17.3.0"
 coil = "3.1.0"
 workmanager = "2.10.1"
+coreKtxVersion = "1.18.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -97,13 +99,15 @@ workmanager-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "wo
 
 # Icons extended
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.4" }
 room = { id = "androidx.room", version.ref = "room" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.1" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

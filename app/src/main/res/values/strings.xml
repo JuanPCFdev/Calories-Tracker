@@ -1,3 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Calories Tracker</string>
+
+
+    <!-- Navigation -->
+    <string name="nav_diary">Diary</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_scan">Scan</string>
+    <string name="nav_analytics">Analytics</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Screen titles -->
+    <string name="title_login">Sign In</string>
+    <string name="title_register">Create Account</string>
+    <string name="title_diary">Today\'s Diary</string>
+    <string name="title_search">Search Food</string>
+    <string name="title_scanner">Barcode Scanner</string>
+    <string name="title_camera_ai">AI Food Scanner</string>
+    <string name="title_ai_result">Confirm Food</string>
+    <string name="title_food_detail">Add to Diary</string>
+    <string name="title_analytics">Weekly Analytics</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_goals">Daily Goals</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_request_failed">Request failed. Please try again.</string>
+    <string name="error_server">Server error. Please try later.</string>
+    <string name="error_timeout">Connection timed out</string>
+    <string name="error_ai_timeout">AI analysis took too long</string>
+    <string name="error_product_not_found">Product not found in database</string>
+    <string name="error_invalid_email">Enter a valid email address</string>
+    <string name="error_password_short">Password must be at least 6 characters</string>
+    <string name="error_passwords_mismatch">Passwords do not match</string>
+    <string name="error_sign_in_failed">Sign in failed. Check your credentials.</string>
+    <string name="error_register_failed">Registration failed. Try again.</string>
+    <string name="error_camera_permission">Camera access required</string>
+    <string name="error_ai_unrecognized">Could not identify the food</string>
+    <string name="error_parse_failed">Could not parse AI response</string>
+    <string name="error_generic">Something went wrong</string>
+
+    <!-- Buttons -->
+    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_in_google">Continue with Google</string>
+    <string name="btn_register">Create Account</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_retry">Try Again</string>
+    <string name="btn_add_to_diary">Add to Diary</string>
+    <string name="btn_open_settings">Open Settings</string>
+    <string name="btn_grant_camera">Grant Camera Access</string>
+    <string name="btn_search_manually">Search Manually</string>
+    <string name="btn_enter_manually">Enter Manually</string>
+    <string name="btn_capture">Capture</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_confirm">Confirm</string>
+
+    <!-- Empty states -->
+    <string name="empty_diary">No entries yet. Start adding food!</string>
+    <string name="empty_search_results">No results for \"%s\"</string>
+    <string name="empty_search_hint">Search by food name or brand</string>
+    <string name="empty_analytics">Not enough data yet. Log meals to see trends.</string>
+    <string name="empty_offline_no_cache">No data available offline</string>
+
+    <!-- Settings -->
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_es">Spanish</string>
+    <string name="settings_goals">Daily Goals</string>
+    <string name="settings_goals_calories">Daily Calories</string>
+    <string name="settings_goals_protein">Protein (g)</string>
+    <string name="settings_goals_carbs">Carbohydrates (g)</string>
+    <string name="settings_goals_fat">Fat (g)</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_version">App version</string>
+
+    <!-- Meal types -->
+    <string name="meal_breakfast">Breakfast</string>
+    <string name="meal_lunch">Lunch</string>
+    <string name="meal_dinner">Dinner</string>
+    <string name="meal_snack">Snack</string>
+
+    <!-- Search feature -->
+    <string name="search_hint">Search food...</string>
+    <string name="select_meal">Select meal</string>
+    <string name="no_results">No results found</string>
+
+    <!-- Add food bottom sheet -->
+    <string name="add_food">Add Food</string>
+    <string name="search_food">Search Food</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="ai_recognition">AI Recognition</string>
+
+    <!-- Scanner -->
+    <string name="scanner_hint">Point camera at barcode</string>
+    <string name="product_not_found">Product not found</string>
+    <string name="scan_again">Scan again</string>
+    <string name="camera_permission_required">Camera permission required</string>
+    <string name="grant_permission">Grant Permission</string>
+
+    <!-- Labels -->
+    <string name="label_calories">Calories</string>
+    <string name="label_protein">Protein</string>
+    <string name="label_carbs">Carbs</string>
+    <string name="label_fat">Fat</string>
+    <string name="label_serving_size">Serving size</string>
+    <string name="label_servings">Servings</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_confirm_password">Confirm password</string>
+    <string name="label_offline">Offline</string>
+    <string name="label_scanning">Scanning…</string>
+    <string name="label_analyzing">Analyzing image…</string>
+    <string name="label_daily_goal">Daily goal</string>
+    <string name="label_of">of</string>
+    <string name="label_kcal">kcal</string>
 </resources>
