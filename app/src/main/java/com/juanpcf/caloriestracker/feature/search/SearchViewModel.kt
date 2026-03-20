@@ -2,6 +2,7 @@ package com.juanpcf.caloriestracker.feature.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.juanpcf.caloriestracker.core.util.NetworkMonitor
 import com.juanpcf.caloriestracker.domain.model.DiaryEntry
 import com.juanpcf.caloriestracker.domain.model.Food
 import com.juanpcf.caloriestracker.domain.model.MealType
@@ -24,13 +25,22 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val searchFoodsUseCase: SearchFoodsUseCase,
     private val addDiaryEntryUseCase: AddDiaryEntryUseCase,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
     private var searchJob: Job? = null
+
+    init {
+        viewModelScope.launch {
+            networkMonitor.isOnline.collect { isOnline ->
+                _uiState.update { it.copy(isOffline = !isOnline) }
+            }
+        }
+    }
 
     fun setDate(date: LocalDate) {
         _uiState.update { it.copy(selectedDate = date) }
@@ -79,9 +89,50 @@ class SearchViewModel @Inject constructor(
                 caloriesSnapshot = food.calories * servings,
                 proteinSnapshot = food.protein * servings,
                 carbsSnapshot = food.carbs * servings,
-                fatSnapshot = food.fat * servings
+                fatSnapshot = food.fat * servings,
+                createdAt = java.time.Instant.now()
             )
             addDiaryEntryUseCase(entry)
+        }
+    }
+
+    fun toggleSelection(foodId: String) {
+        _uiState.update { state ->
+            val current = state.selectedItems
+            state.copy(
+                selectedItems = if (foodId in current) current - foodId else current + foodId
+            )
+        }
+    }
+
+    fun clearSelection() {
+        _uiState.update { it.copy(selectedItems = emptySet()) }
+    }
+
+    fun saveSelectedToLog(mealType: MealType) {
+        val userId = authRepository.currentUser?.uid ?: return
+        val state = _uiState.value
+        val date = state.selectedDate
+        viewModelScope.launch {
+            state.selectedItems
+                .mapNotNull { id -> state.results.find { it.id == id } }
+                .forEach { food ->
+                    val entry = DiaryEntry(
+                        id = UUID.randomUUID().toString(),
+                        userId = userId,
+                        food = food,
+                        date = date,
+                        mealType = mealType,
+                        servings = 1.0,
+                        caloriesSnapshot = food.calories,
+                        proteinSnapshot = food.protein,
+                        carbsSnapshot = food.carbs,
+                        fatSnapshot = food.fat,
+                        createdAt = java.time.Instant.now()
+                    )
+                    addDiaryEntryUseCase(entry)
+                }
+            _uiState.update { it.copy(selectedItems = emptySet()) }
         }
     }
 }

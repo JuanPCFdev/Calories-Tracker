@@ -12,7 +12,8 @@ import java.time.Instant
 import javax.inject.Inject
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val firestoreUserRepository: FirestoreUserRepository
 ) : AuthRepository {
 
     override val currentUser: UserProfile?
@@ -26,18 +27,24 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
 
     override suspend fun signInWithEmail(email: String, password: String): Result<UserProfile> =
         runCatching {
-            auth.signInWithEmailAndPassword(email, password).await().user!!.toProfile()
+            val profile = auth.signInWithEmailAndPassword(email, password).await().user!!.toProfile()
+            runCatching { firestoreUserRepository.writeUserProfile(profile) }
+            profile
         }
 
     override suspend fun signInWithGoogle(idToken: String): Result<UserProfile> =
         runCatching {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
-            auth.signInWithCredential(credential).await().user!!.toProfile()
+            val profile = auth.signInWithCredential(credential).await().user!!.toProfile()
+            runCatching { firestoreUserRepository.writeUserProfile(profile) }
+            profile
         }
 
     override suspend fun registerWithEmail(email: String, password: String): Result<UserProfile> =
         runCatching {
-            auth.createUserWithEmailAndPassword(email, password).await().user!!.toProfile()
+            val profile = auth.createUserWithEmailAndPassword(email, password).await().user!!.toProfile()
+            runCatching { firestoreUserRepository.writeUserProfile(profile) }
+            profile
         }
 
     override suspend fun signOut() = auth.signOut()

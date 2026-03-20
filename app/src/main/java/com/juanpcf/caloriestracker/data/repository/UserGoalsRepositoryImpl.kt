@@ -1,5 +1,6 @@
 package com.juanpcf.caloriestracker.data.repository
 
+import com.juanpcf.caloriestracker.data.firebase.FirestoreUserRepository
 import com.juanpcf.caloriestracker.data.local.dao.UserGoalsDao
 import com.juanpcf.caloriestracker.data.local.entity.UserGoalsEntity
 import com.juanpcf.caloriestracker.domain.model.UserGoals
@@ -11,7 +12,8 @@ import java.util.UUID
 import javax.inject.Inject
 
 class UserGoalsRepositoryImpl @Inject constructor(
-    private val dao: UserGoalsDao
+    private val dao: UserGoalsDao,
+    private val firestoreUserRepository: FirestoreUserRepository
 ) : UserGoalsRepository {
 
     override fun getGoals(userId: String): Flow<UserGoals?> =
@@ -20,8 +22,10 @@ class UserGoalsRepositoryImpl @Inject constructor(
     override suspend fun getGoalsOnce(userId: String): UserGoals? =
         dao.getGoalsOnce(userId)?.toDomain()
 
-    override suspend fun saveGoals(goals: UserGoals) =
+    override suspend fun saveGoals(goals: UserGoals) {
         dao.insertOrReplace(goals.toEntity())
+        runCatching { firestoreUserRepository.writeUserGoals(goals) }
+    }
 
     private fun UserGoalsEntity.toDomain() = UserGoals(
         userId = userId, dailyCalories = dailyCalories,

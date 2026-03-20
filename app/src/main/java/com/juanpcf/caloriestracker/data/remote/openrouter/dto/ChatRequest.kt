@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class ChatRequest(
-    @SerialName("model") val model: String = "qwen/qwen3-235b-a22b",
+    @SerialName("model") val model: String = "qwen/qwen3-vl-235b-a22b-thinking",
     @SerialName("messages") val messages: List<Message>,
     @SerialName("max_tokens") val maxTokens: Int = 300
 )

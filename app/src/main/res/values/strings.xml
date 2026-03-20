@@ -78,6 +78,8 @@
     <string name="settings_goals_carbs">Carbohydrates (g)</string>
     <string name="settings_goals_fat">Fat (g)</string>
     <string name="settings_account">Account</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_sign_out_confirm">Are you sure you want to sign out?</string>
     <string name="settings_version">App version</string>
 
     <!-- Meal types -->
@@ -90,6 +92,8 @@
     <string name="search_hint">Search food...</string>
     <string name="select_meal">Select meal</string>
     <string name="no_results">No results found</string>
+    <string name="label_currently_selected">Currently selected</string>
+    <string name="btn_save_to_my_day">Save to My Day</string>
 
     <!-- Add food bottom sheet -->
     <string name="add_food">Add Food</string>
@@ -104,6 +108,37 @@
     <string name="camera_permission_required">Camera permission required</string>
     <string name="grant_permission">Grant Permission</string>
 
+    <!-- Analytics -->
+    <string name="analytics_summary">Summary</string>
+    <string name="analytics_avg_calories">Avg. calories/day</string>
+    <string name="analytics_best_day">Best day</string>
+    <string name="analytics_worst_day">Worst day</string>
+    <string name="analytics_macronutrients">Macronutrients</string>
+    <string name="analytics_period_day">Day</string>
+    <string name="analytics_period_week">Week</string>
+    <string name="analytics_period_month">Month</string>
+    <string name="analytics_avg_protein">Avg Protein</string>
+    <string name="analytics_avg_fat">Avg Fat</string>
+
+    <!-- Login -->
+    <string name="login_welcome_back">Welcome back</string>
+    <string name="login_tagline">Track your nutrition</string>
+    <string name="btn_sign_in_apple">Continue with Apple</string>
+    <string name="msg_apple_coming_soon">Coming soon</string>
+    <string name="label_or_authenticate_with">OR AUTHENTICATE WITH</string>
+
+    <!-- Diary screen -->
+    <string name="diary_recent_activity">Recent Activity</string>
+    <string name="diary_view_all">View All</string>
+
+    <!-- AI Result screen -->
+    <string name="ai_result_food_details">Food Details</string>
+    <string name="ai_result_nutrition_preview">NUTRITION PREVIEW</string>
+    <string name="ai_result_nutrition_per_serving">Nutrition per serving</string>
+    <string name="ai_result_unrecognized_banner">The AI could not identify this food. Please fill in the nutritional details manually.</string>
+    <string name="ai_result_title_unrecognized">Unrecognized Food — Edit Details</string>
+    <string name="label_unit">Unit</string>
+
     <!-- Labels -->
     <string name="label_calories">Calories</string>
     <string name="label_protein">Protein</string>
@@ -115,6 +150,7 @@
     <string name="label_password">Password</string>
     <string name="label_confirm_password">Confirm password</string>
     <string name="label_offline">Offline</string>
+    <string name="label_offline_ai_disabled">AI recognition requires an internet connection</string>
     <string name="label_scanning">Scanning…</string>
     <string name="label_analyzing">Analyzing image…</string>
     <string name="label_daily_goal">Daily goal</string>

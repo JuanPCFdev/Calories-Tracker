@@ -1,19 +1,24 @@
 package com.juanpcf.caloriestracker.data.repository
 
+import android.content.Context
+import androidx.work.WorkManager
 import com.juanpcf.caloriestracker.data.local.dao.DiaryEntryDao
 import com.juanpcf.caloriestracker.data.local.entity.DiaryEntryEntity
+import com.juanpcf.caloriestracker.data.sync.FirestoreSyncWorker
 import com.juanpcf.caloriestracker.domain.model.DiaryEntry
 import com.juanpcf.caloriestracker.domain.model.Food
 import com.juanpcf.caloriestracker.domain.model.FoodSource
 import com.juanpcf.caloriestracker.domain.model.MacroTotals
 import com.juanpcf.caloriestracker.domain.repository.DiaryRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
 
 class DiaryRepositoryImpl @Inject constructor(
-    private val dao: DiaryEntryDao
+    private val dao: DiaryEntryDao,
+    @ApplicationContext private val context: Context
 ) : DiaryRepository {
 
     override fun getEntriesForDate(userId: String, date: LocalDate): Flow<List<DiaryEntry>> =
@@ -29,7 +34,10 @@ class DiaryRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun addEntry(entry: DiaryEntry) = dao.insert(entry.toEntity())
+    override suspend fun addEntry(entry: DiaryEntry) {
+        dao.insert(entry.toEntity())
+        FirestoreSyncWorker.scheduleImmediateSync(WorkManager.getInstance(context))
+    }
 
     override suspend fun deleteEntry(entryId: String) = dao.deleteById(entryId)
 
@@ -47,7 +55,8 @@ class DiaryRepositoryImpl @Inject constructor(
         ),
         date = date, mealType = mealType, servings = servings,
         caloriesSnapshot = caloriesSnapshot, proteinSnapshot = proteinSnapshot,
-        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot, syncedAt = syncedAt
+        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot, syncedAt = syncedAt,
+        createdAt = createdAt
     )
 
     private fun DiaryEntry.toEntity() = DiaryEntryEntity(
@@ -55,6 +64,6 @@ class DiaryRepositoryImpl @Inject constructor(
         caloriesSnapshot = caloriesSnapshot, proteinSnapshot = proteinSnapshot,
         carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot,
         servings = servings, mealType = mealType, date = date,
-        createdAt = java.time.Instant.now(), syncedAt = syncedAt
+        createdAt = createdAt, syncedAt = syncedAt
     )
 }

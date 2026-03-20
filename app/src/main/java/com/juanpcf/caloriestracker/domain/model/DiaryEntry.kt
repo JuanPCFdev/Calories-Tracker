@@ -14,5 +14,8 @@ data class DiaryEntry(
     val proteinSnapshot: Double,
     val carbsSnapshot: Double,
     val fatSnapshot: Double,
-    val syncedAt: Instant? = null
+    val syncedAt: Instant? = null,
+    // DB column 'created_at' already exists in DiaryEntryEntity v1. No migration required.
+    // Existing entries upgraded from before this field was mapped will have createdAt = Instant.EPOCH (acceptable).
+    val createdAt: Instant = Instant.now()
 )

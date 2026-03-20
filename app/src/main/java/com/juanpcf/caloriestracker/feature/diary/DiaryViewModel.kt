@@ -2,6 +2,7 @@ package com.juanpcf.caloriestracker.feature.diary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.juanpcf.caloriestracker.core.util.NetworkMonitor
 import com.juanpcf.caloriestracker.domain.model.DiaryEntry
 import com.juanpcf.caloriestracker.domain.repository.AuthRepository
 import com.juanpcf.caloriestracker.domain.usecase.diary.AddDiaryEntryUseCase
@@ -29,7 +30,8 @@ class DiaryViewModel @Inject constructor(
     private val addDiaryEntry: AddDiaryEntryUseCase,
     private val deleteDiaryEntry: DeleteDiaryEntryUseCase,
     private val getUserGoals: GetUserGoalsUseCase,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
     private val _selectedDate = MutableStateFlow(LocalDate.now())
@@ -40,14 +42,16 @@ class DiaryViewModel @Inject constructor(
         combine(
             getDiaryForDate(userId, date),
             getDailyTotals(userId, date),
-            getUserGoals(userId)
-        ) { entries, totals, goals ->
+            getUserGoals(userId),
+            networkMonitor.isOnline
+        ) { entries, totals, goals, isOnline ->
             DiaryUiState(
                 selectedDate = date,
                 entries = entries,
                 totals = totals,
                 goals = goals,
-                isLoading = false
+                isLoading = false,
+                isOffline = !isOnline
             )
         }
     }.catch { e ->

@@ -77,6 +77,8 @@
     <string name="settings_goals_carbs">Carbohidratos (g)</string>
     <string name="settings_goals_fat">Grasas (g)</string>
     <string name="settings_account">Cuenta</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_sign_out_confirm">¿Seguro que querés cerrar sesión?</string>
     <string name="settings_version">Versión de la app</string>
 
     <!-- Meal types -->
@@ -89,6 +91,8 @@
     <string name="search_hint">Buscar alimento...</string>
     <string name="select_meal">Seleccionar comida</string>
     <string name="no_results">Sin resultados</string>
+    <string name="label_currently_selected">Seleccionado actualmente</string>
+    <string name="btn_save_to_my_day">Guardar en mi día</string>
 
     <!-- Add food bottom sheet -->
     <string name="add_food">Agregar Alimento</string>
@@ -103,6 +107,37 @@
     <string name="camera_permission_required">Se requiere permiso de cámara</string>
     <string name="grant_permission">Otorgar permiso</string>
 
+    <!-- Analytics -->
+    <string name="analytics_summary">Resumen</string>
+    <string name="analytics_avg_calories">Cal. prom./día</string>
+    <string name="analytics_best_day">Mejor día</string>
+    <string name="analytics_worst_day">Peor día</string>
+    <string name="analytics_macronutrients">Macronutrientes</string>
+    <string name="analytics_period_day">Día</string>
+    <string name="analytics_period_week">Semana</string>
+    <string name="analytics_period_month">Mes</string>
+    <string name="analytics_avg_protein">Prot. prom.</string>
+    <string name="analytics_avg_fat">Grasas prom.</string>
+
+    <!-- Login -->
+    <string name="login_welcome_back">Bienvenido de nuevo</string>
+    <string name="login_tagline">Seguí tu nutrición</string>
+    <string name="btn_sign_in_apple">Continuar con Apple</string>
+    <string name="msg_apple_coming_soon">Próximamente</string>
+    <string name="label_or_authenticate_with">O AUTENTICARSE CON</string>
+
+    <!-- Diary screen -->
+    <string name="diary_recent_activity">Actividad reciente</string>
+    <string name="diary_view_all">Ver todo</string>
+
+    <!-- AI Result screen -->
+    <string name="ai_result_food_details">Detalles del alimento</string>
+    <string name="ai_result_nutrition_preview">VISTA PREVIA NUTRICIONAL</string>
+    <string name="ai_result_nutrition_per_serving">Nutrición por porción</string>
+    <string name="ai_result_unrecognized_banner">La IA no pudo identificar este alimento. Por favor, completá los datos nutricionales manualmente.</string>
+    <string name="ai_result_title_unrecognized">Alimento no reconocido — Editá los detalles</string>
+    <string name="label_unit">Unidad</string>
+
     <!-- Labels -->
     <string name="label_calories">Calorías</string>
     <string name="label_protein">Proteínas</string>
@@ -114,6 +149,7 @@
     <string name="label_password">Contraseña</string>
     <string name="label_confirm_password">Confirmar contraseña</string>
     <string name="label_offline">Sin conexión</string>
+    <string name="label_offline_ai_disabled">El reconocimiento IA requiere conexión a internet</string>
     <string name="label_scanning">Escaneando…</string>
     <string name="label_analyzing">Analizando imagen…</string>
     <string name="label_daily_goal">Meta diaria</string>

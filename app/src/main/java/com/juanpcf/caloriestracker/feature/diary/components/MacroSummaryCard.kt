@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.juanpcf.caloriestracker.R
+import com.juanpcf.caloriestracker.core.designsystem.theme.MacroColors
 import com.juanpcf.caloriestracker.domain.model.MacroTotals
 import com.juanpcf.caloriestracker.domain.model.UserGoals
 
@@ -54,7 +55,7 @@ fun MacroSummaryCard(
                     label = stringResource(R.string.label_protein),
                     current = totals.protein,
                     target = proteinTarget,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MacroColors.protein,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.weight(0.05f))
@@ -62,7 +63,7 @@ fun MacroSummaryCard(
                     label = stringResource(R.string.label_carbs),
                     current = totals.carbs,
                     target = carbsTarget,
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MacroColors.carbs,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.weight(0.05f))
@@ -70,7 +71,7 @@ fun MacroSummaryCard(
                     label = stringResource(R.string.label_fat),
                     current = totals.fat,
                     target = fatTarget,
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MacroColors.fat,
                     modifier = Modifier.weight(1f)
                 )
             }

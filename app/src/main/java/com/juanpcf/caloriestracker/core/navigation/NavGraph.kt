@@ -12,11 +12,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
+import com.juanpcf.caloriestracker.feature.analytics.AnalyticsScreen
 import com.juanpcf.caloriestracker.feature.auth.LoginScreen
 import com.juanpcf.caloriestracker.feature.auth.RegisterScreen
+import com.juanpcf.caloriestracker.feature.camera_ai.AiResultScreen
+import com.juanpcf.caloriestracker.feature.camera_ai.CameraAiScreen
 import com.juanpcf.caloriestracker.feature.diary.DiaryScreen
 import com.juanpcf.caloriestracker.feature.scanner.ScannerScreen
 import com.juanpcf.caloriestracker.feature.search.SearchScreen
+import com.juanpcf.caloriestracker.feature.settings.GoalsScreen
+import com.juanpcf.caloriestracker.feature.settings.SettingsScreen
 
 @Composable
 fun CaloriesTrackerNavHost(
@@ -64,20 +69,13 @@ fun CaloriesTrackerNavHost(
 
         navigation<MainGraph>(startDestination = Home) {
             composable<Home> {
-                DiaryScreen(
-                    onNavigateToSearch = { selectedDate ->
-                        navController.navigate(Search)
-                    },
-                    onNavigateToScanner = { navController.navigate(Scanner) },
-                    onNavigateToCameraAi = { navController.navigate(CameraAi) }
-                )
+                DiaryScreen()
             }
             composable<Search> {
                 SearchScreen(
-                    onNavigateToFoodDetail = { foodId, date ->
-                        navController.navigate(FoodDetail(foodId = foodId, selectedDate = date))
-                    },
-                    onNavigateBack = { navController.popBackStack() }
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToScanner = { navController.navigate(Scanner) },
+                    onNavigateToCameraAi = { navController.navigate(CameraAi) }
                 )
             }
             composable<Scanner> {
@@ -92,36 +90,58 @@ fun CaloriesTrackerNavHost(
                 Content()
             }
             composable<Analytics> {
-                // TODO Phase 9: AnalyticsScreen(navController)
-                androidx.compose.material3.Text("Analytics Screen — coming soon")
+                AnalyticsScreen()
             }
             composable<Settings> {
-                // TODO Phase 10: SettingsScreen(navController)
-                androidx.compose.material3.Text("Settings Screen — coming soon")
+                SettingsScreen(
+                    onNavigateToGoals = { navController.navigate(Goals) },
+                    onSignOut = {
+                        navController.navigate(AuthGraph) {
+                            popUpTo(MainGraph) { inclusive = true }
+                        }
+                    }
+                )
             }
             composable<Goals> {
-                // TODO Phase 10: GoalsScreen(navController)
-                androidx.compose.material3.Text("Goals Screen — coming soon")
+                GoalsScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
             composable<CameraAi>(
                 enterTransition   = { slideInVertically { it } + fadeIn() },
                 popExitTransition = { slideOutVertically { it } + fadeOut() }
             ) {
-                // TODO Phase 8: CameraAiScreen(navController)
-                androidx.compose.material3.Text("AI Camera — coming soon")
+                @androidx.camera.core.ExperimentalGetImage
+                @Composable
+                fun Content() {
+                    CameraAiScreen(
+                        onNavigateBack = { navController.popBackStack() },
+                        onNavigateToAiResult = { aiResultRoute ->
+                            navController.navigate(aiResultRoute)
+                        }
+                    )
+                }
+                Content()
             }
             composable<AiResult>(
                 enterTransition = { fadeIn() }
             ) {
-                // TODO Phase 8: AiResultScreen(navController)
-                androidx.compose.material3.Text("AI Result — coming soon")
+                AiResultScreen(
+                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateToDiary = {
+                        navController.navigate(Home) {
+                            popUpTo(MainGraph) { inclusive = false }
+                        }
+                    }
+                )
             }
             composable<FoodDetail>(
                 enterTransition   = { slideInVertically { it } + fadeIn() },
                 popExitTransition = { slideOutVertically { it } + fadeOut() }
             ) { backStackEntry ->
                 val args = backStackEntry.toRoute<FoodDetail>()
-                // TODO Phase 6: FoodDetailScreen(navController, args.foodId, args.selectedDate)
+                // Stub route — FoodDetail is kept for forward compatibility.
+                // SearchScreen no longer navigates here (replaced by multi-select + bulk save flow).
                 androidx.compose.material3.Text("Food Detail: ${args.foodId}")
             }
         }

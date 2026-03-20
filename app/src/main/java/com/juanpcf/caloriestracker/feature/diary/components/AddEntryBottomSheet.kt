@@ -48,7 +48,6 @@ fun AddEntryBottomSheet(
                     imageVector = Icons.Default.Search,
                     contentDescription = null
                 )
-                Spacer(modifier = Modifier.weight(0f).height(0.dp))
                 Text(
                     text = stringResource(R.string.search_food),
                     modifier = Modifier.padding(start = 8.dp)

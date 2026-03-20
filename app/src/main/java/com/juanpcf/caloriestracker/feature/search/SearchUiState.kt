@@ -8,5 +8,7 @@ data class SearchUiState(
     val results: List<Food> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val selectedDate: LocalDate = LocalDate.now()
+    val selectedDate: LocalDate = LocalDate.now(),
+    val isOffline: Boolean = false,
+    val selectedItems: Set<String> = emptySet()
 )

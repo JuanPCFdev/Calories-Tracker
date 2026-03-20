@@ -11,7 +11,20 @@ import kotlinx.serialization.Serializable
 @Serializable object Search
 @Serializable object Scanner
 @Serializable object CameraAi
-@Serializable object AiResult
+
+@Serializable
+data class AiResult(
+    val foodId: String,
+    val foodName: String,
+    val calories: Double,
+    val protein: Double,
+    val carbs: Double,
+    val fat: Double,
+    val servingSize: Double,
+    val servingUnit: String,
+    val isUnrecognized: Boolean = false
+)
+
 @Serializable object Analytics
 @Serializable object Settings
 @Serializable object Goals

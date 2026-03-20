@@ -11,5 +11,6 @@ data class DiaryUiState(
     val totals: MacroTotals = MacroTotals(),
     val goals: UserGoals? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val isOffline: Boolean = false
 )
