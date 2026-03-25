@@ -23,6 +23,7 @@ import com.juanpcf.caloriestracker.core.designsystem.theme.MacroColors
 import com.juanpcf.caloriestracker.domain.model.DayMacros
 import java.time.format.TextStyle as DateTextStyle
 import java.util.Locale
+import kotlin.math.ceil
 import kotlin.math.max
 
 /**
@@ -77,6 +78,14 @@ fun CalorieTrendLineChart(
 
         // Evenly space points across chart width
         val pointSpacing = if (data.size > 1) chartWidth / (data.size - 1).toFloat() else 0f
+
+        // Calculate how many labels fit without overlap
+        val labelWidth = 32.dp.toPx()
+        val minSpacing = 4.dp.toPx()
+        val step = if (data.size > 1) {
+            val requiredStep = ceil((labelWidth + minSpacing) / pointSpacing).toInt()
+            maxOf(1, requiredStep)
+        } else 1
 
         fun xForIndex(index: Int): Float =
             paddingHorizontal + index * pointSpacing
@@ -144,16 +153,22 @@ fun CalorieTrendLineChart(
                 )
             }
 
-            // Day label below
-            val dayLabel = day.date.dayOfWeek.getDisplayName(DateTextStyle.SHORT, Locale.getDefault())
-            val measured = textMeasurer.measure(dayLabel, labelStyle)
-            drawText(
-                textLayoutResult = measured,
-                topLeft = Offset(
-                    x = x - measured.size.width / 2f,
-                    y = chartBottom + 4.dp.toPx()
+            // Day label below — only draw at adaptive step intervals to prevent overlap
+            if (index % step == 0) {
+                val dayLabel = if (data.size <= 7) {
+                    day.date.dayOfWeek.getDisplayName(DateTextStyle.SHORT, Locale.getDefault())
+                } else {
+                    day.date.dayOfMonth.toString()
+                }
+                val measured = textMeasurer.measure(dayLabel, labelStyle)
+                drawText(
+                    textLayoutResult = measured,
+                    topLeft = Offset(
+                        x = x - measured.size.width / 2f,
+                        y = chartBottom + 4.dp.toPx()
+                    )
                 )
-            )
+            }
         }
     }
 }

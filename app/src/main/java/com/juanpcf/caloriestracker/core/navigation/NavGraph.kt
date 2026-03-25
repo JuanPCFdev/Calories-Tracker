@@ -18,6 +18,7 @@ import com.juanpcf.caloriestracker.feature.auth.RegisterScreen
 import com.juanpcf.caloriestracker.feature.camera_ai.AiResultScreen
 import com.juanpcf.caloriestracker.feature.camera_ai.CameraAiScreen
 import com.juanpcf.caloriestracker.feature.diary.DiaryScreen
+import com.juanpcf.caloriestracker.feature.diary.edit.DiaryEntryEditScreen
 import com.juanpcf.caloriestracker.feature.scanner.ScannerScreen
 import com.juanpcf.caloriestracker.feature.search.SearchScreen
 import com.juanpcf.caloriestracker.feature.settings.GoalsScreen
@@ -69,7 +70,11 @@ fun CaloriesTrackerNavHost(
 
         navigation<MainGraph>(startDestination = Home) {
             composable<Home> {
-                DiaryScreen()
+                DiaryScreen(
+                    onNavigateToEditEntry = { entryId ->
+                        navController.navigate(DiaryEntryEdit(entryId))
+                    }
+                )
             }
             composable<Search> {
                 SearchScreen(
@@ -143,6 +148,14 @@ fun CaloriesTrackerNavHost(
                 // Stub route — FoodDetail is kept for forward compatibility.
                 // SearchScreen no longer navigates here (replaced by multi-select + bulk save flow).
                 androidx.compose.material3.Text("Food Detail: ${args.foodId}")
+            }
+            composable<DiaryEntryEdit>(
+                enterTransition = { slideInVertically { it } + fadeIn() },
+                popExitTransition = { slideOutVertically { it } + fadeOut() }
+            ) {
+                DiaryEntryEditScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
             }
         }
     }

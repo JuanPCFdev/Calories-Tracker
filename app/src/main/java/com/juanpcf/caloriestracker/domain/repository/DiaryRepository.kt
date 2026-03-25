@@ -11,4 +11,6 @@ interface DiaryRepository {
     suspend fun addEntry(entry: DiaryEntry)
     suspend fun deleteEntry(entryId: String)
     suspend fun getEntriesForDateRange(userId: String, fromDate: LocalDate, toDate: LocalDate): List<DiaryEntry>
+    suspend fun getEntryById(entryId: String): DiaryEntry?
+    suspend fun updateEntry(entry: DiaryEntry)
 }

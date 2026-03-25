@@ -1,9 +1,11 @@
 package com.juanpcf.caloriestracker.feature.camera_ai
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.juanpcf.caloriestracker.R
 import com.juanpcf.caloriestracker.core.navigation.AiResult
 import com.juanpcf.caloriestracker.domain.model.DiaryEntry
 import com.juanpcf.caloriestracker.domain.model.Food
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
@@ -38,7 +41,7 @@ data class AiResultUiState(
 
 sealed interface AiResultUiEvent {
     data object NavigateToDiary : AiResultUiEvent
-    data class ShowError(val message: String) : AiResultUiEvent
+    data class ShowError(@StringRes val resId: Int) : AiResultUiEvent
 }
 
 @HiltViewModel
@@ -83,21 +86,21 @@ class AiResultViewModel @Inject constructor(
 
         if (userId == null) {
             viewModelScope.launch {
-                _uiEvents.send(AiResultUiEvent.ShowError("User not authenticated"))
+                _uiEvents.send(AiResultUiEvent.ShowError(R.string.error_generic))
             }
             return
         }
 
         val name = state.foodName.trim()
-        val calories = state.calories.toDoubleOrNull()
-        val protein = state.protein.toDoubleOrNull()
-        val carbs = state.carbs.toDoubleOrNull()
-        val fat = state.fat.toDoubleOrNull()
-        val servingSize = state.servingSize.toDoubleOrNull()
+        val calories = state.calories.toCleanDouble()
+        val protein = state.protein.toCleanDouble()
+        val carbs = state.carbs.toCleanDouble()
+        val fat = state.fat.toCleanDouble()
+        val servingSize = state.servingSize.toCleanDouble()
 
         if (name.isBlank() || calories == null || protein == null || carbs == null || fat == null || servingSize == null) {
             viewModelScope.launch {
-                _uiEvents.send(AiResultUiEvent.ShowError("Please fill in all required fields"))
+                _uiEvents.send(AiResultUiEvent.ShowError(R.string.error_fill_required_fields))
             }
             return
         }
@@ -135,12 +138,18 @@ class AiResultViewModel @Inject constructor(
                 _uiEvents.send(AiResultUiEvent.NavigateToDiary)
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
-                _uiEvents.send(AiResultUiEvent.ShowError(e.message ?: "Failed to add entry"))
+                _uiEvents.send(AiResultUiEvent.ShowError(R.string.error_generic))
             }
         }
     }
 
     private fun formatNutrient(value: Double): String =
         if (value == value.toLong().toDouble()) value.toLong().toString()
-        else "%.1f".format(value)
+        else String.format(Locale.US, "%.1f", value)
 }
+
+private fun String.toCleanDouble(): Double? =
+    this.trim()
+        .replace(",", ".")           // handle locale decimal commas
+        .replace(Regex("[^0-9.]"), "") // strip remaining non-numeric chars
+        .toDoubleOrNull()

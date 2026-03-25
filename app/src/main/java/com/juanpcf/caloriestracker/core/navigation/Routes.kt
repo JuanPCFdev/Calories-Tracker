@@ -31,3 +31,6 @@ data class AiResult(
 
 @Serializable
 data class FoodDetail(val foodId: String, val selectedDate: String)
+
+@Serializable
+data class DiaryEntryEdit(val entryId: String)

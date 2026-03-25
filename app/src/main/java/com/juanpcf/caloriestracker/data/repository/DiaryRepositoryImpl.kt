@@ -41,6 +41,19 @@ class DiaryRepositoryImpl @Inject constructor(
 
     override suspend fun deleteEntry(entryId: String) = dao.deleteById(entryId)
 
+    override suspend fun getEntryById(entryId: String): DiaryEntry? =
+        dao.getById(entryId)?.toDomain()
+
+    override suspend fun updateEntry(entry: DiaryEntry) {
+        val existing = dao.getById(entry.id)
+        val entityToSave = entry.toEntity().copy(
+            createdAt = existing?.createdAt ?: entry.createdAt,
+            syncedAt = null
+        )
+        dao.insert(entityToSave)
+        FirestoreSyncWorker.scheduleImmediateSync(WorkManager.getInstance(context))
+    }
+
     override suspend fun getEntriesForDateRange(
         userId: String, fromDate: LocalDate, toDate: LocalDate
     ): List<DiaryEntry> = dao.getEntriesForDateRange(userId, fromDate.toEpochDay(), toDate.toEpochDay())

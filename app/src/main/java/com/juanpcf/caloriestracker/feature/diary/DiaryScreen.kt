@@ -59,6 +59,7 @@ private val TIME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm a").withZone(Zon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiaryScreen(
+    onNavigateToEditEntry: (entryId: String) -> Unit,
     viewModel: DiaryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -238,6 +239,7 @@ fun DiaryScreen(
                 ActivityFeedItem(
                     entry = entry,
                     onDelete = { viewModel.deleteEntry(entry) },
+                    onClick = { onNavigateToEditEntry(entry.id) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp)
@@ -279,6 +281,7 @@ fun DiaryScreen(
 private fun ActivityFeedItem(
     entry: DiaryEntry,
     onDelete: (DiaryEntry) -> Unit,
+    onClick: (DiaryEntry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val mealLabel = when (entry.mealType) {
@@ -294,7 +297,7 @@ private fun ActivityFeedItem(
         TIME_FORMATTER.format(Instant.EPOCH)
     }
 
-    ElevatedCard(modifier = modifier) {
+    ElevatedCard(onClick = { onClick(entry) }, modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

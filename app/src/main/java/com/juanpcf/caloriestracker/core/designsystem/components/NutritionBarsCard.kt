@@ -18,8 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.juanpcf.caloriestracker.R
 import com.juanpcf.caloriestracker.core.designsystem.theme.MacroColors
+import java.util.Locale
 
 /**
  * ElevatedCard displaying a calorie headline and 3 horizontal macro progress bars.
@@ -88,7 +91,7 @@ fun NutritionBarsCard(
 
             // Macro progress bars
             MacroBar(
-                label = "Protein",
+                label = stringResource(R.string.label_protein),
                 value = protein,
                 goal = proteinGoal,
                 color = MacroColors.protein,
@@ -98,7 +101,7 @@ fun NutritionBarsCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             MacroBar(
-                label = "Carbs",
+                label = stringResource(R.string.label_carbs),
                 value = carbs,
                 goal = carbsGoal,
                 color = MacroColors.carbs,
@@ -108,7 +111,7 @@ fun NutritionBarsCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             MacroBar(
-                label = "Fats",
+                label = stringResource(R.string.label_fat),
                 value = fat,
                 goal = fatGoal,
                 color = MacroColors.fat,
@@ -149,8 +152,9 @@ private fun MacroBar(
             trackColor = trackColor
         )
 
+        val formatted = if (value == value.toLong().toDouble()) value.toLong().toString() else String.format(Locale.US, "%.1f", value)
         Text(
-            text = "${value.toInt()}g",
+            text = "${formatted}g",
             style = MaterialTheme.typography.bodyMedium,
             color = color
         )

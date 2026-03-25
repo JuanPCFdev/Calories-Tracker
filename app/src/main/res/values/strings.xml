@@ -24,6 +24,7 @@
     <string name="title_goals">Daily Goals</string>
 
     <!-- Errors -->
+    <string name="error_fill_required_fields">Please fill in all required fields</string>
     <string name="error_no_internet">No internet connection</string>
     <string name="error_request_failed">Request failed. Please try again.</string>
     <string name="error_server">Server error. Please try later.</string>
@@ -138,6 +139,16 @@
     <string name="ai_result_unrecognized_banner">The AI could not identify this food. Please fill in the nutritional details manually.</string>
     <string name="ai_result_title_unrecognized">Unrecognized Food — Edit Details</string>
     <string name="label_unit">Unit</string>
+
+    <!-- Edit Entry screen -->
+    <string name="title_edit_entry">Edit Entry</string>
+    <string name="edit_entry_macros_header">Nutritional Snapshot</string>
+    <string name="edit_entry_servings_label">Servings</string>
+    <string name="edit_entry_meal_type_label">Meal type</string>
+    <string name="dialog_delete_entry_title">Delete entry?</string>
+    <string name="dialog_delete_entry_body">This will permanently remove this entry from your diary.</string>
+    <string name="error_entry_not_found">Entry not found. It may have been deleted.</string>
+    <string name="error_invalid_servings">Enter a valid servings amount (must be greater than 0)</string>
 
     <!-- Labels -->
     <string name="label_calories">Calories</string>

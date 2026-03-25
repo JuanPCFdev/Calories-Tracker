@@ -23,6 +23,7 @@
     <string name="title_goals">Metas diarias</string>
 
     <!-- Errors -->
+    <string name="error_fill_required_fields">Completá todos los campos requeridos</string>
     <string name="error_no_internet">Sin conexión a internet</string>
     <string name="error_request_failed">Error en la solicitud. Intentá de nuevo.</string>
     <string name="error_server">Error del servidor. Intentá más tarde.</string>
@@ -137,6 +138,16 @@
     <string name="ai_result_unrecognized_banner">La IA no pudo identificar este alimento. Por favor, completá los datos nutricionales manualmente.</string>
     <string name="ai_result_title_unrecognized">Alimento no reconocido — Editá los detalles</string>
     <string name="label_unit">Unidad</string>
+
+    <!-- Edit Entry screen -->
+    <string name="title_edit_entry">Editar registro</string>
+    <string name="edit_entry_macros_header">Snapshot nutricional</string>
+    <string name="edit_entry_servings_label">Porciones</string>
+    <string name="edit_entry_meal_type_label">Tipo de comida</string>
+    <string name="dialog_delete_entry_title">¿Eliminar registro?</string>
+    <string name="dialog_delete_entry_body">Esto eliminará permanentemente este registro de tu diario.</string>
+    <string name="error_entry_not_found">Registro no encontrado. Puede que haya sido eliminado.</string>
+    <string name="error_invalid_servings">Ingresá una cantidad de porciones válida (debe ser mayor a 0)</string>
 
     <!-- Labels -->
     <string name="label_calories">Calorías</string>

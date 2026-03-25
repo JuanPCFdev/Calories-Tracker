@@ -15,6 +15,9 @@ interface DiaryEntryDao {
     @Query("DELETE FROM diary_entry WHERE id = :id")
     suspend fun deleteById(id: String)
 
+    @Query("SELECT * FROM diary_entry WHERE id = :id LIMIT 1")
+    suspend fun getById(id: String): DiaryEntryEntity?
+
     @Query("""
         SELECT * FROM diary_entry
         WHERE user_id = :userId AND date = :dateEpochDay
