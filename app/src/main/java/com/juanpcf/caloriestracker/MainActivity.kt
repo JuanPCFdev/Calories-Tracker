@@ -25,7 +25,6 @@ import androidx.work.WorkManager
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.juanpcf.caloriestracker.core.navigation.AddFood
 import com.juanpcf.caloriestracker.core.navigation.AuthGraph
 import com.juanpcf.caloriestracker.core.navigation.CaloriesTrackerBottomBar
 import com.juanpcf.caloriestracker.core.navigation.CaloriesTrackerNavHost
@@ -108,10 +107,7 @@ class MainActivity : AppCompatActivity() {
                         modifier = Modifier.fillMaxSize(),
                         bottomBar = {
                             if (isInMainGraph) {
-                                CaloriesTrackerBottomBar(
-                                    navController = navController,
-                                    onAddClick = { navController.navigate(AddFood) }
-                                )
+                                CaloriesTrackerBottomBar(navController = navController)
                             }
                         }
                     ) { innerPadding ->
