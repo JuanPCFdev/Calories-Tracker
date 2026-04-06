@@ -6,14 +6,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,18 +25,16 @@ import androidx.work.WorkManager
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.juanpcf.caloriestracker.core.navigation.AddFood
+import com.juanpcf.caloriestracker.core.navigation.AuthGraph
 import com.juanpcf.caloriestracker.core.navigation.CaloriesTrackerBottomBar
 import com.juanpcf.caloriestracker.core.navigation.CaloriesTrackerNavHost
 import com.juanpcf.caloriestracker.core.navigation.MainGraph
-import com.juanpcf.caloriestracker.core.navigation.Scanner
-import com.juanpcf.caloriestracker.core.navigation.Search
-import com.juanpcf.caloriestracker.core.navigation.CameraAi
 import com.juanpcf.caloriestracker.data.sync.FirestoreSyncWorker
 import com.juanpcf.caloriestracker.domain.model.AppPreferences
 import com.juanpcf.caloriestracker.domain.model.Theme
 import com.juanpcf.caloriestracker.domain.repository.AppPreferencesRepository
 import com.juanpcf.caloriestracker.domain.repository.AuthRepository
-import com.juanpcf.caloriestracker.feature.diary.components.AddEntryBottomSheet
 import com.juanpcf.caloriestracker.ui.theme.CaloriesTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -60,7 +61,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // Schedule or cancel Firestore periodic sync based on auth state
             val workManager = WorkManager.getInstance(applicationContext)
             LaunchedEffect(Unit) {
                 authRepository.authState.collect { user ->
@@ -80,50 +80,47 @@ class MainActivity : AppCompatActivity() {
 
             CaloriesTrackerTheme(darkTheme = darkTheme) {
                 val navController = rememberNavController()
-                val startDestination = if (authRepository.currentUser != null) MainGraph else com.juanpcf.caloriestracker.core.navigation.AuthGraph
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val isInMainGraph = navBackStackEntry?.destination?.hierarchy?.any {
-                    it.hasRoute(MainGraph::class)
-                } == true
 
-                // AddEntryBottomSheet state hoisted at Scaffold level so the bottom nav ADD button
-                // can trigger it from any tab, not just DiaryScreen.
-                var showAddSheet by remember { mutableStateOf(false) }
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-                        if (isInMainGraph) {
-                            CaloriesTrackerBottomBar(
-                                navController = navController,
-                                onAddClick = { showAddSheet = true }
-                            )
+                // Firebase restores sessions asynchronously on startup. Checking currentUser
+                // synchronously can return null before the session is loaded, sending the user
+                // to the login screen even when already authenticated.
+                // We wait for the first authState emission (fires immediately from local cache).
+                var startDestination by remember { mutableStateOf<Any?>(null) }
+                LaunchedEffect(Unit) {
+                    authRepository.authState.collect { user ->
+                        if (startDestination == null) {
+                            startDestination = if (user != null) MainGraph else AuthGraph
                         }
                     }
-                ) { innerPadding ->
-                    CaloriesTrackerNavHost(
-                        navController = navController,
-                        startDestination = startDestination,
-                        modifier = Modifier.padding(innerPadding)
-                    )
                 }
 
-                if (showAddSheet) {
-                    AddEntryBottomSheet(
-                        onDismiss = { showAddSheet = false },
-                        onNavigateToSearch = {
-                            showAddSheet = false
-                            navController.navigate(Search)
-                        },
-                        onNavigateToScanner = {
-                            showAddSheet = false
-                            navController.navigate(Scanner)
-                        },
-                        onNavigateToCameraAi = {
-                            showAddSheet = false
-                            navController.navigate(CameraAi)
+                if (startDestination == null) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val isInMainGraph = navBackStackEntry?.destination?.hierarchy?.any {
+                        it.hasRoute(MainGraph::class)
+                    } == true
+
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        bottomBar = {
+                            if (isInMainGraph) {
+                                CaloriesTrackerBottomBar(
+                                    navController = navController,
+                                    onAddClick = { navController.navigate(AddFood) }
+                                )
+                            }
                         }
-                    )
+                    ) { innerPadding ->
+                        CaloriesTrackerNavHost(
+                            navController = navController,
+                            startDestination = startDestination!!,
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
                 }
             }
         }

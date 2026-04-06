@@ -1,10 +1,7 @@
 package com.juanpcf.caloriestracker.core.di
 
 import com.juanpcf.caloriestracker.data.firebase.FirebaseAuthRepositoryImpl
-import com.juanpcf.caloriestracker.data.local.dao.FoodCacheDao
-import com.juanpcf.caloriestracker.data.remote.openfoodfacts.OpenFoodFactsApi
 import com.juanpcf.caloriestracker.data.remote.openrouter.OpenRouterApi
-import com.juanpcf.caloriestracker.data.remote.usda.UsdaApi
 import com.juanpcf.caloriestracker.data.repository.AppPreferencesRepositoryImpl
 import com.juanpcf.caloriestracker.data.repository.DiaryRepositoryImpl
 import com.juanpcf.caloriestracker.data.repository.FoodRepositoryImpl
@@ -19,7 +16,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -34,11 +30,8 @@ abstract class RepositoryModule {
     companion object {
         @Provides @Singleton
         fun provideFoodRepository(
-            foodCacheDao: FoodCacheDao,
-            usdaApi: UsdaApi,
-            openFoodFactsApi: OpenFoodFactsApi,
             openRouterApi: OpenRouterApi,
-            @Named("usda_api_key") usdaApiKey: String
-        ): FoodRepository = FoodRepositoryImpl(foodCacheDao, usdaApi, openFoodFactsApi, openRouterApi, usdaApiKey)
+            preferencesRepository: AppPreferencesRepository
+        ): FoodRepository = FoodRepositoryImpl(openRouterApi, preferencesRepository)
     }
 }

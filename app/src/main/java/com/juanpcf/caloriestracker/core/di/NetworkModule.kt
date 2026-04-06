@@ -1,9 +1,7 @@
 package com.juanpcf.caloriestracker.core.di
 
 import com.juanpcf.caloriestracker.BuildConfig
-import com.juanpcf.caloriestracker.data.remote.openfoodfacts.OpenFoodFactsApi
 import com.juanpcf.caloriestracker.data.remote.openrouter.OpenRouterApi
-import com.juanpcf.caloriestracker.data.remote.usda.UsdaApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -36,15 +34,6 @@ object NetworkModule {
                     else HttpLoggingInterceptor.Level.NONE
         }
 
-    @Provides @Singleton @Named("base")
-    fun provideBaseOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(logging)
-            .build()
-
     @Provides @Singleton @Named("openrouter")
     fun provideOpenRouterOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
@@ -64,24 +53,6 @@ object NetworkModule {
             .build()
 
     @Provides @Singleton
-    fun provideOpenFoodFactsApi(@Named("base") client: OkHttpClient): OpenFoodFactsApi =
-        Retrofit.Builder()
-            .baseUrl("https://world.openfoodfacts.org/")
-            .client(client)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-            .create(OpenFoodFactsApi::class.java)
-
-    @Provides @Singleton
-    fun provideUsdaApi(@Named("base") client: OkHttpClient): UsdaApi =
-        Retrofit.Builder()
-            .baseUrl("https://api.nal.usda.gov/")
-            .client(client)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-            .create(UsdaApi::class.java)
-
-    @Provides @Singleton
     fun provideOpenRouterApi(@Named("openrouter") client: OkHttpClient): OpenRouterApi =
         Retrofit.Builder()
             .baseUrl("https://openrouter.ai/api/v1/")
@@ -89,8 +60,4 @@ object NetworkModule {
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(OpenRouterApi::class.java)
-
-    @Provides @Singleton
-    @Named("usda_api_key")
-    fun provideUsdaApiKey(): String = BuildConfig.USDA_API_KEY
 }

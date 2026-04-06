@@ -8,9 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable object MainGraph
 @Serializable object Home
-@Serializable object Search
-@Serializable object Scanner
-@Serializable object CameraAi
+@Serializable object AddFood
 
 @Serializable
 data class AiResult(
@@ -28,9 +26,6 @@ data class AiResult(
 @Serializable object Analytics
 @Serializable object Settings
 @Serializable object Goals
-
-@Serializable
-data class FoodDetail(val foodId: String, val selectedDate: String)
 
 @Serializable
 data class DiaryEntryEdit(val entryId: String)

@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -40,7 +39,6 @@ private data class BottomNavItem(
 
 private val bottomNavItems = listOf(
     BottomNavItem(Home, R.string.nav_diary, Icons.Filled.Home),
-    BottomNavItem(Search, R.string.nav_search, Icons.Filled.Search),
     BottomNavItem(Analytics, R.string.nav_analytics, Icons.Filled.BarChart),
     BottomNavItem(Settings, R.string.nav_settings, Icons.Filled.Person),
 )
@@ -55,10 +53,9 @@ fun CaloriesTrackerBottomBar(
 
     Box(contentAlignment = Alignment.TopCenter) {
         NavigationBar {
-            // HOME
             bottomNavItems.forEachIndexed { index, item ->
-                // Insert an invisible spacer item at index 2 (center) to reserve space for ADD button
-                if (index == 2) {
+                // Insert invisible spacer at center to reserve space for ADD button
+                if (index == 1) {
                     NavigationBarItem(
                         selected = false,
                         onClick = {},

@@ -11,16 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.toRoute
 import com.juanpcf.caloriestracker.feature.analytics.AnalyticsScreen
 import com.juanpcf.caloriestracker.feature.auth.LoginScreen
 import com.juanpcf.caloriestracker.feature.auth.RegisterScreen
+import com.juanpcf.caloriestracker.feature.camera_ai.AddFoodScreen
 import com.juanpcf.caloriestracker.feature.camera_ai.AiResultScreen
-import com.juanpcf.caloriestracker.feature.camera_ai.CameraAiScreen
 import com.juanpcf.caloriestracker.feature.diary.DiaryScreen
 import com.juanpcf.caloriestracker.feature.diary.edit.DiaryEntryEditScreen
-import com.juanpcf.caloriestracker.feature.scanner.ScannerScreen
-import com.juanpcf.caloriestracker.feature.search.SearchScreen
 import com.juanpcf.caloriestracker.feature.settings.GoalsScreen
 import com.juanpcf.caloriestracker.feature.settings.SettingsScreen
 
@@ -76,24 +73,6 @@ fun CaloriesTrackerNavHost(
                     }
                 )
             }
-            composable<Search> {
-                SearchScreen(
-                    onNavigateBack = { navController.popBackStack() },
-                    onNavigateToScanner = { navController.navigate(Scanner) },
-                    onNavigateToCameraAi = { navController.navigate(CameraAi) }
-                )
-            }
-            composable<Scanner> {
-                @androidx.camera.core.ExperimentalGetImage
-                @Composable
-                fun Content() {
-                    ScannerScreen(
-                        onNavigateBack = { navController.popBackStack() },
-                        onFoodAdded = { navController.popBackStack() }
-                    )
-                }
-                Content()
-            }
             composable<Analytics> {
                 AnalyticsScreen()
             }
@@ -112,14 +91,14 @@ fun CaloriesTrackerNavHost(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }
-            composable<CameraAi>(
+            composable<AddFood>(
                 enterTransition   = { slideInVertically { it } + fadeIn() },
                 popExitTransition = { slideOutVertically { it } + fadeOut() }
             ) {
                 @androidx.camera.core.ExperimentalGetImage
                 @Composable
                 fun Content() {
-                    CameraAiScreen(
+                    AddFoodScreen(
                         onNavigateBack = { navController.popBackStack() },
                         onNavigateToAiResult = { aiResultRoute ->
                             navController.navigate(aiResultRoute)
@@ -139,15 +118,6 @@ fun CaloriesTrackerNavHost(
                         }
                     }
                 )
-            }
-            composable<FoodDetail>(
-                enterTransition   = { slideInVertically { it } + fadeIn() },
-                popExitTransition = { slideOutVertically { it } + fadeOut() }
-            ) { backStackEntry ->
-                val args = backStackEntry.toRoute<FoodDetail>()
-                // Stub route — FoodDetail is kept for forward compatibility.
-                // SearchScreen no longer navigates here (replaced by multi-select + bulk save flow).
-                androidx.compose.material3.Text("Food Detail: ${args.foodId}")
             }
             composable<DiaryEntryEdit>(
                 enterTransition = { slideInVertically { it } + fadeIn() },
