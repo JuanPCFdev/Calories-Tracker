@@ -96,7 +96,7 @@
     <string name="btn_save_to_my_day">Guardar en mi día</string>
 
     <!-- Add food bottom sheet -->
-    <string name="add_food">Agregar Alimento</string>
+    <string name="add_food">Agregar</string>
     <string name="search_food">Buscar Alimento</string>
     <string name="scan_barcode">Escanear Código</string>
     <string name="ai_recognition">Reconocimiento IA</string>
