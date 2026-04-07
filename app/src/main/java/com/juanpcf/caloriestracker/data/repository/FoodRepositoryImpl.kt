@@ -47,7 +47,13 @@ class FoodRepositoryImpl @Inject constructor(
 
     private suspend fun parseAiFood(request: ChatRequest): Food {
         val response = openRouterApi.analyzeFood(request)
-        val content = response.choices.firstOrNull()?.message?.content
+        if (response.error != null) {
+            throw IllegalStateException("OpenRouter error ${response.error.code}: ${response.error.message}")
+        }
+        val message = response.choices.firstOrNull()?.message
+            ?: throw IllegalStateException("Empty OpenRouter response")
+        val content = message.content.takeIf { it.isNotBlank() }
+            ?: message.reasoningContent?.takeIf { it.isNotBlank() }
             ?: throw IllegalStateException("Empty OpenRouter response")
         val obj = json.parseToJsonElement(extractJson(content)).jsonObject
         if (obj["error"]?.jsonPrimitive?.content == "UNRECOGNIZED")

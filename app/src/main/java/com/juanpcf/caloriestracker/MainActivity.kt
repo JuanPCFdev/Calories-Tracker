@@ -6,17 +6,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -80,43 +75,30 @@ class MainActivity : AppCompatActivity() {
             CaloriesTrackerTheme(darkTheme = darkTheme) {
                 val navController = rememberNavController()
 
-                // Firebase restores sessions asynchronously on startup. Checking currentUser
-                // synchronously can return null before the session is loaded, sending the user
-                // to the login screen even when already authenticated.
-                // We wait for the first authState emission (fires immediately from local cache).
-                var startDestination by remember { mutableStateOf<Any?>(null) }
-                LaunchedEffect(Unit) {
-                    authRepository.authState.collect { user ->
-                        if (startDestination == null) {
-                            startDestination = if (user != null) MainGraph else AuthGraph
-                        }
-                    }
+                // Firebase SDK loads the cached session from SharedPreferences before
+                // Application.onCreate(), so currentUser is reliable synchronously here.
+                val startDestination = remember {
+                    if (authRepository.currentUser != null) MainGraph else AuthGraph
                 }
 
-                if (startDestination == null) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                } else {
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val isInMainGraph = navBackStackEntry?.destination?.hierarchy?.any {
-                        it.hasRoute(MainGraph::class)
-                    } == true
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val isInMainGraph = navBackStackEntry?.destination?.hierarchy?.any {
+                    it.hasRoute(MainGraph::class)
+                } == true
 
-                    Scaffold(
-                        modifier = Modifier.fillMaxSize(),
-                        bottomBar = {
-                            if (isInMainGraph) {
-                                CaloriesTrackerBottomBar(navController = navController)
-                            }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        if (isInMainGraph) {
+                            CaloriesTrackerBottomBar(navController = navController)
                         }
-                    ) { innerPadding ->
-                        CaloriesTrackerNavHost(
-                            navController = navController,
-                            startDestination = startDestination!!,
-                            modifier = Modifier.padding(innerPadding)
-                        )
                     }
+                ) { innerPadding ->
+                    CaloriesTrackerNavHost(
+                        navController = navController,
+                        startDestination = startDestination,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }

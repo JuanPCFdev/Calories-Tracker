@@ -50,16 +50,16 @@ object ChatRequestBuilder {
     // OpenRouter tries each model in order on 429 / provider error. Max 3 models.
     // Vision-capable models only — image analysis requires multimodal support.
     private val MODELS_IMAGE = listOf(
-        "qwen/qwen3.6-plus:free",
-        "qwen/qwen2.5-vl-72b-instruct:free",
-        "meta-llama/llama-4-scout:free"
+        "meta-llama/llama-4-scout:free",
+        "google/gemma-4-31b-it:free",
+        "qwen/qwen2.5-vl-72b-instruct:free"
     )
 
     // Text analysis — no vision requirement.
     private val MODELS_TEXT = listOf(
-        "qwen/qwen3.6-plus:free",
         "qwen/qwen3-next-80b-a3b-instruct:free",
-        "meta-llama/llama-3.3-70b-instruct:free"
+        "meta-llama/llama-3.3-70b-instruct:free",
+        "google/gemma-4-31b-it:free"
     )
 
     fun buildFoodAnalysisRequest(base64Image: String, languageTag: String = "en"): ChatRequest {

@@ -89,7 +89,7 @@ class AddFoodViewModel @Inject constructor(
     private suspend fun runAnalysis(block: suspend () -> Result<Food>) {
         val result = retryWithBackoff(maxAttempts = 3) {
             try {
-                withTimeout(30_000L) { block() }
+                withTimeout(90_000L) { block() }
             } catch (e: TimeoutCancellationException) {
                 Result.failure(IllegalStateException("Request timed out. Please try again."))
             }
