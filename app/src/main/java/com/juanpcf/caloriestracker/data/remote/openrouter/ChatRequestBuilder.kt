@@ -16,10 +16,12 @@ Respond ONLY with a valid JSON object in this exact format, no other text:
   "calories": 250.0,
   "protein": 8.5,
   "carbs": 35.0,
-  "fat": 9.0
+  "fat": 9.0,
+  "sugar": 5.0
 }
 Rules:
 - servingUnit must be one of: "g", "ml", "oz", "piece"
+- "sugar" is the sugar portion of the carbohydrates, in grams (must be <= carbs). Use 0 if unknown.
 - All numeric values must be for the serving size specified
 - If you cannot identify the food, respond with: {"error": "UNRECOGNIZED"}
 - Never include explanations, markdown, or any text outside the JSON object

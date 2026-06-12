@@ -60,7 +60,8 @@ class DiaryEntryEditViewModel @Inject constructor(
                     editedCalories = formatNutrient(entry.caloriesSnapshot),
                     editedProtein = formatNutrient(entry.proteinSnapshot),
                     editedCarbs = formatNutrient(entry.carbsSnapshot),
-                    editedFat = formatNutrient(entry.fatSnapshot)
+                    editedFat = formatNutrient(entry.fatSnapshot),
+                    editedSugar = formatNutrient(entry.sugarSnapshot)
                 )
             }
         }
@@ -101,6 +102,10 @@ class DiaryEntryEditViewModel @Inject constructor(
         _uiState.update { if (it is DiaryEntryEditUiState.Loaded) it.copy(editedFat = value) else it }
     }
 
+    fun onSugarChange(value: String) {
+        _uiState.update { if (it is DiaryEntryEditUiState.Loaded) it.copy(editedSugar = value) else it }
+    }
+
     fun onMealTypeChange(mealType: MealType) {
         _uiState.update { if (it is DiaryEntryEditUiState.Loaded) it.copy(editedMealType = mealType) else it }
     }
@@ -128,6 +133,7 @@ class DiaryEntryEditViewModel @Inject constructor(
         val protein  = state.editedProtein.toNutrientOrNull()  ?: 0.0
         val carbs    = state.editedCarbs.toNutrientOrNull()    ?: 0.0
         val fat      = state.editedFat.toNutrientOrNull()      ?: 0.0
+        val sugar    = state.editedSugar.toNutrientOrNull()    ?: 0.0
 
         val updatedEntry = state.entry.copy(
             servings = servings,
@@ -135,7 +141,8 @@ class DiaryEntryEditViewModel @Inject constructor(
             caloriesSnapshot = calories,
             proteinSnapshot  = protein,
             carbsSnapshot    = carbs,
-            fatSnapshot      = fat
+            fatSnapshot      = fat,
+            sugarSnapshot    = sugar
         )
 
         viewModelScope.launch {

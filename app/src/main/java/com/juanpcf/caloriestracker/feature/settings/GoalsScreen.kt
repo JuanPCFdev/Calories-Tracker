@@ -127,6 +127,15 @@ fun GoalsScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                OutlinedTextField(
+                    value = uiState.sugar,
+                    onValueChange = viewModel::onSugarChange,
+                    label = { Text(stringResource(R.string.settings_goals_sugar)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
                 uiState.error?.let { errorMsg ->
                     Text(
                         text = errorMsg,

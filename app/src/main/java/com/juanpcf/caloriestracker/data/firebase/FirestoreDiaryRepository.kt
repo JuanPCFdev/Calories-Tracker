@@ -20,6 +20,7 @@ class FirestoreDiaryRepository @Inject constructor(
             "proteinSnapshot" to entity.proteinSnapshot,
             "carbsSnapshot" to entity.carbsSnapshot,
             "fatSnapshot" to entity.fatSnapshot,
+            "sugarSnapshot" to entity.sugarSnapshot,
             "servings" to entity.servings,
             "mealType" to entity.mealType.name,
             "date" to entity.date.toEpochDay(),
@@ -48,6 +49,7 @@ class FirestoreDiaryRepository @Inject constructor(
                     proteinSnapshot = doc.getDouble("proteinSnapshot") ?: 0.0,
                     carbsSnapshot = doc.getDouble("carbsSnapshot") ?: 0.0,
                     fatSnapshot = doc.getDouble("fatSnapshot") ?: 0.0,
+                    sugarSnapshot = doc.getDouble("sugarSnapshot") ?: 0.0,
                     servings = doc.getDouble("servings") ?: 1.0,
                     mealType = com.juanpcf.caloriestracker.domain.model.MealType.valueOf(
                         doc.getString("mealType") ?: "LUNCH"

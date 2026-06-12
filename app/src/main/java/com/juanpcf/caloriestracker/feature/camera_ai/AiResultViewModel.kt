@@ -34,6 +34,7 @@ data class AiResultUiState(
     val protein: String = "",
     val carbs: String = "",
     val fat: String = "",
+    val sugar: String = "",
     val servingSize: String = "",
     val servingUnit: String = "g",
     val isEditable: Boolean = true,
@@ -62,6 +63,7 @@ class AiResultViewModel @Inject constructor(
             protein = if (args.protein == 0.0 && args.isUnrecognized) "" else formatNutrient(args.protein),
             carbs = if (args.carbs == 0.0 && args.isUnrecognized) "" else formatNutrient(args.carbs),
             fat = if (args.fat == 0.0 && args.isUnrecognized) "" else formatNutrient(args.fat),
+            sugar = if (args.sugar == 0.0 && args.isUnrecognized) "" else formatNutrient(args.sugar),
             servingSize = if (args.servingSize == 0.0 && args.isUnrecognized) "" else args.servingSize.toString(),
             servingUnit = args.servingUnit,
             isEditable = true
@@ -79,6 +81,7 @@ class AiResultViewModel @Inject constructor(
     fun onProteinChange(value: String) = _uiState.update { it.copy(protein = value) }
     fun onCarbsChange(value: String) = _uiState.update { it.copy(carbs = value) }
     fun onFatChange(value: String) = _uiState.update { it.copy(fat = value) }
+    fun onSugarChange(value: String) = _uiState.update { it.copy(sugar = value) }
     fun onServingSizeChange(value: String) = _uiState.update { it.copy(servingSize = value) }
     fun onServingUnitChange(value: String) = _uiState.update { it.copy(servingUnit = value) }
 
@@ -114,6 +117,7 @@ class AiResultViewModel @Inject constructor(
             protein = protein,
             carbs = carbs,
             fat = fat,
+            sugar = state.sugar.toNutrientOrNull(),
             servingSize = servingSize,
             servingUnit = state.servingUnit,
             source = FoodSource.AI
@@ -129,7 +133,8 @@ class AiResultViewModel @Inject constructor(
             caloriesSnapshot = food.calories * servings,
             proteinSnapshot = food.protein * servings,
             carbsSnapshot = food.carbs * servings,
-            fatSnapshot = food.fat * servings
+            fatSnapshot = food.fat * servings,
+            sugarSnapshot = (food.sugar ?: 0.0) * servings
         )
 
         viewModelScope.launch {

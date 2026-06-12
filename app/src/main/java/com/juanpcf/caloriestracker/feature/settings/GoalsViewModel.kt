@@ -22,6 +22,7 @@ data class GoalsUiState(
     val protein: String = "",
     val carbs: String = "",
     val fat: String = "",
+    val sugar: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -60,6 +61,7 @@ class GoalsViewModel @Inject constructor(
                         protein = goals?.dailyProtein?.toString() ?: "",
                         carbs = goals?.dailyCarbs?.toString() ?: "",
                         fat = goals?.dailyFat?.toString() ?: "",
+                        sugar = goals?.dailySugar?.toString() ?: "",
                         isLoading = false,
                         error = null
                     )
@@ -94,6 +96,12 @@ class GoalsViewModel @Inject constructor(
         }
     }
 
+    fun onSugarChange(value: String) {
+        if (value.all { it.isDigit() }) {
+            _uiState.update { it.copy(sugar = value, error = null) }
+        }
+    }
+
     fun saveGoals() {
         viewModelScope.launch {
             val userId = authRepository.currentUser?.uid ?: return@launch
@@ -103,6 +111,7 @@ class GoalsViewModel @Inject constructor(
             val protein = state.protein.toIntOrNull() ?: 0
             val carbs = state.carbs.toIntOrNull() ?: 0
             val fat = state.fat.toIntOrNull() ?: 0
+            val sugar = state.sugar.toIntOrNull() ?: 0
 
             _uiState.update { it.copy(isLoading = true, error = null) }
 
@@ -113,7 +122,8 @@ class GoalsViewModel @Inject constructor(
                         dailyCalories = calories,
                         dailyProtein = protein,
                         dailyCarbs = carbs,
-                        dailyFat = fat
+                        dailyFat = fat,
+                        dailySugar = sugar
                     )
                 )
             }.onSuccess {

@@ -39,7 +39,8 @@ interface DiaryEntryDao {
             SUM(calories_snapshot) AS calories,
             SUM(protein_snapshot)  AS protein,
             SUM(carbs_snapshot)    AS carbs,
-            SUM(fat_snapshot)      AS fat
+            SUM(fat_snapshot)      AS fat,
+            SUM(sugar_snapshot)    AS sugar
         FROM diary_entry
         WHERE user_id = :userId AND date = :dateEpochDay AND is_deleted = 0
     """)

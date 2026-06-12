@@ -111,6 +111,7 @@ fun AiResultScreen(
                 onProteinChange = viewModel::onProteinChange,
                 onCarbsChange = viewModel::onCarbsChange,
                 onFatChange = viewModel::onFatChange,
+                onSugarChange = viewModel::onSugarChange,
                 onServingSizeChange = viewModel::onServingSizeChange,
                 onServingUnitChange = viewModel::onServingUnitChange,
                 onAddToDiary = { mealType, servings -> viewModel.addToDiary(mealType, servings) },
@@ -129,6 +130,7 @@ private fun AiResultContent(
     onProteinChange: (String) -> Unit,
     onCarbsChange: (String) -> Unit,
     onFatChange: (String) -> Unit,
+    onSugarChange: (String) -> Unit,
     onServingSizeChange: (String) -> Unit,
     onServingUnitChange: (String) -> Unit,
     onAddToDiary: (MealType, Double) -> Unit,
@@ -167,6 +169,8 @@ private fun AiResultContent(
             carbsGoal = 250.0,
             fat = uiState.fat.toDoubleOrNull() ?: 0.0,
             fatGoal = 65.0,
+            sugar = uiState.sugar.toDoubleOrNull() ?: 0.0,
+            sugarGoal = 50.0,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -265,6 +269,16 @@ private fun AiResultContent(
                         modifier = Modifier.weight(1f)
                     )
                 }
+
+                OutlinedTextField(
+                    value = uiState.sugar,
+                    onValueChange = onSugarChange,
+                    label = { Text(stringResource(R.string.label_sugar)) },
+                    enabled = uiState.isEditable,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
 

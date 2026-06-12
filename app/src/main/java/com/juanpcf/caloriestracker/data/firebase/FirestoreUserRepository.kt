@@ -2,6 +2,7 @@ package com.juanpcf.caloriestracker.data.firebase
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.juanpcf.caloriestracker.domain.model.UserGoals
+import com.juanpcf.caloriestracker.domain.model.UserPhysicalProfile
 import com.juanpcf.caloriestracker.domain.model.UserProfile
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -17,9 +18,21 @@ class FirestoreUserRepository @Inject constructor(
             "dailyCalories" to goals.dailyCalories,
             "dailyProtein" to goals.dailyProtein,
             "dailyCarbs" to goals.dailyCarbs,
-            "dailyFat" to goals.dailyFat
+            "dailyFat" to goals.dailyFat,
+            "dailySugar" to goals.dailySugar
         )
         userDoc(goals.userId).collection("goals").document("current").set(data).await()
+    }
+
+    suspend fun writeUserPhysicalProfile(profile: UserPhysicalProfile) {
+        val data = mapOf(
+            "heightCm" to profile.heightCm,
+            "weightKg" to profile.weightKg,
+            "birthDate" to profile.birthDate.toEpochDay(),
+            "gender" to profile.gender.name,
+            "activityLevel" to profile.activityLevel.name
+        )
+        userDoc(profile.userId).collection("physicalProfile").document("current").set(data).await()
     }
 
     suspend fun writeUserProfile(profile: UserProfile) {

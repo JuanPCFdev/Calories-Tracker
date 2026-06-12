@@ -17,5 +17,6 @@ data class UserGoalsEntity(
     @ColumnInfo(name = "daily_protein") val dailyProtein: Int,
     @ColumnInfo(name = "daily_carbs") val dailyCarbs: Int,
     @ColumnInfo(name = "daily_fat") val dailyFat: Int,
+    @ColumnInfo(name = "daily_sugar", defaultValue = "0") val dailySugar: Int = 0,
     @ColumnInfo(name = "updated_at") val updatedAt: Instant
 )

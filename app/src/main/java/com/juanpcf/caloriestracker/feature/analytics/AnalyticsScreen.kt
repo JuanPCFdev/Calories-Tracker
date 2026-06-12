@@ -115,7 +115,8 @@ fun AnalyticsScreen(
                                 weeklyData = uiState.weeklyData,
                                 proteinGoal = uiState.goals?.dailyProtein?.toDouble() ?: 150.0,
                                 carbsGoal = uiState.goals?.dailyCarbs?.toDouble() ?: 250.0,
-                                fatGoal = uiState.goals?.dailyFat?.toDouble() ?: 65.0
+                                fatGoal = uiState.goals?.dailyFat?.toDouble() ?: 65.0,
+                                sugarGoal = uiState.goals?.dailySugar?.toDouble() ?: 50.0
                             )
                         }
 
@@ -183,7 +184,8 @@ private fun MacroDonutRow(
     weeklyData: List<DayMacros>,
     proteinGoal: Double,
     carbsGoal: Double,
-    fatGoal: Double
+    fatGoal: Double,
+    sugarGoal: Double
 ) {
     val daysWithData = remember(weeklyData) { weeklyData.filter { it.calories > 0 } }
     val avgProtein = remember(daysWithData) {
@@ -194,6 +196,9 @@ private fun MacroDonutRow(
     }
     val avgFat = remember(daysWithData) {
         if (daysWithData.isEmpty()) 0.0 else daysWithData.sumOf { it.fat } / daysWithData.size
+    }
+    val avgSugar = remember(daysWithData) {
+        if (daysWithData.isEmpty()) 0.0 else daysWithData.sumOf { it.sugar } / daysWithData.size
     }
 
     ElevatedCard(modifier = Modifier.fillMaxWidth()) {
@@ -225,6 +230,12 @@ private fun MacroDonutRow(
                     consumed = avgFat,
                     goal = fatGoal,
                     color = MacroColors.fat
+                )
+                MacroRingChip(
+                    label = stringResource(R.string.label_sugar),
+                    consumed = avgSugar,
+                    goal = sugarGoal,
+                    color = MacroColors.sugar
                 )
             }
         }

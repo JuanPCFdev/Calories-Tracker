@@ -33,12 +33,14 @@ class UserGoalsRepositoryImpl @Inject constructor(
 
     private fun UserGoalsEntity.toDomain() = UserGoals(
         userId = userId, dailyCalories = dailyCalories,
-        dailyProtein = dailyProtein, dailyCarbs = dailyCarbs, dailyFat = dailyFat
+        dailyProtein = dailyProtein, dailyCarbs = dailyCarbs, dailyFat = dailyFat,
+        dailySugar = dailySugar
     )
 
     private fun UserGoals.toEntity() = UserGoalsEntity(
         id = UUID.randomUUID().toString(), userId = userId,
         dailyCalories = dailyCalories, dailyProtein = dailyProtein,
-        dailyCarbs = dailyCarbs, dailyFat = dailyFat, updatedAt = Instant.now()
+        dailyCarbs = dailyCarbs, dailyFat = dailyFat, dailySugar = dailySugar,
+        updatedAt = Instant.now()
     )
 }

@@ -7,6 +7,7 @@ import com.juanpcf.caloriestracker.data.local.converter.Converters
 import com.juanpcf.caloriestracker.data.local.dao.DiaryEntryDao
 import com.juanpcf.caloriestracker.data.local.dao.FoodCacheDao
 import com.juanpcf.caloriestracker.data.local.dao.UserGoalsDao
+import com.juanpcf.caloriestracker.data.local.dao.UserPhysicalProfileDao
 import com.juanpcf.caloriestracker.data.local.migration.ALL_MIGRATIONS
 import dagger.Module
 import dagger.Provides
@@ -34,4 +35,8 @@ object DatabaseModule {
 
     @Provides @Singleton
     fun provideUserGoalsDao(db: CaloriesTrackerDatabase): UserGoalsDao = db.userGoalsDao()
+
+    @Provides @Singleton
+    fun provideUserPhysicalProfileDao(db: CaloriesTrackerDatabase): UserPhysicalProfileDao =
+        db.userPhysicalProfileDao()
 }

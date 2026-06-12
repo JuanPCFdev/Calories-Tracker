@@ -2,7 +2,9 @@ package com.juanpcf.caloriestracker.data.local.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.juanpcf.caloriestracker.domain.model.ActivityLevel
 import com.juanpcf.caloriestracker.domain.model.FoodSource
+import com.juanpcf.caloriestracker.domain.model.Gender
 import com.juanpcf.caloriestracker.domain.model.MealType
 import java.time.Instant
 import java.time.LocalDate
@@ -20,4 +22,10 @@ class Converters {
 
     @TypeConverter fun foodSourceToString(v: FoodSource?): String? = v?.name
     @TypeConverter fun stringToFoodSource(v: String?): FoodSource? = v?.let { FoodSource.valueOf(it) }
+
+    @TypeConverter fun genderToString(v: Gender?): String? = v?.name
+    @TypeConverter fun stringToGender(v: String?): Gender? = v?.let { Gender.valueOf(it) }
+
+    @TypeConverter fun activityLevelToString(v: ActivityLevel?): String? = v?.name
+    @TypeConverter fun stringToActivityLevel(v: String?): ActivityLevel? = v?.let { ActivityLevel.valueOf(it) }
 }

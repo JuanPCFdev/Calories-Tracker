@@ -22,6 +22,26 @@
     <string name="title_analytics">Weekly Analytics</string>
     <string name="title_settings">Settings</string>
     <string name="title_goals">Daily Goals</string>
+    <string name="title_physical_profile">Physical Profile</string>
+
+    <!-- Physical profile -->
+    <string name="settings_profile">Profile</string>
+    <string name="settings_profile_physical">Physical profile</string>
+    <string name="label_height_cm">Height (cm)</string>
+    <string name="label_weight_kg">Weight (kg)</string>
+    <string name="label_birth_date">Date of birth</string>
+    <string name="label_gender">Sex</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="label_activity_level">Activity level</string>
+    <string name="activity_sedentary">Sedentary</string>
+    <string name="activity_light">Lightly active</string>
+    <string name="activity_moderate">Moderately active</string>
+    <string name="activity_active">Very active</string>
+    <string name="activity_very_active">Extra active</string>
+    <string name="physical_profile_tdee_label">ESTIMATED DAILY BURN</string>
+    <string name="physical_profile_tdee_hint">Calories you burn per day (BMR × activity). Estimated from your profile.</string>
+    <string name="error_invalid_profile">Enter a valid height, weight and date of birth.</string>
 
     <!-- Errors -->
     <string name="error_fill_required_fields">Please fill in all required fields</string>
@@ -78,6 +98,7 @@
     <string name="settings_goals_protein">Protein (g)</string>
     <string name="settings_goals_carbs">Carbohydrates (g)</string>
     <string name="settings_goals_fat">Fat (g)</string>
+    <string name="settings_goals_sugar">Sugar (g)</string>
     <string name="settings_account">Account</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_sign_out_confirm">Are you sure you want to sign out?</string>
@@ -140,6 +161,16 @@
     <string name="diary_recent_activity">Recent Activity</string>
     <string name="diary_view_all">View All</string>
 
+    <!-- Energy balance -->
+    <string name="energy_balance_title">Energy balance</string>
+    <string name="energy_consumed">Consumed</string>
+    <string name="energy_burned">Burned</string>
+    <string name="energy_net">Net</string>
+    <string name="energy_burned_estimated">Burn estimated from your profile</string>
+    <string name="energy_profile_cta_title">See calories burned</string>
+    <string name="energy_profile_cta_body">Add your height, weight, sex and age to estimate what you burn each day.</string>
+    <string name="energy_profile_cta_button">Complete profile</string>
+
     <!-- AI Result screen -->
     <string name="ai_result_food_details">Food Details</string>
     <string name="ai_result_nutrition_preview">NUTRITION PREVIEW</string>
@@ -163,6 +194,7 @@
     <string name="label_protein">Protein</string>
     <string name="label_carbs">Carbs</string>
     <string name="label_fat">Fat</string>
+    <string name="label_sugar">Sugar</string>
     <string name="label_serving_size">Serving size</string>
     <string name="label_servings">Servings</string>
     <string name="label_email">Email</string>

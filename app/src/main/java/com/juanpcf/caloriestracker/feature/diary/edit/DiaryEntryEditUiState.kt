@@ -14,6 +14,7 @@ sealed interface DiaryEntryEditUiState {
         val editedProtein: String,
         val editedCarbs: String,
         val editedFat: String,
+        val editedSugar: String,
         val isSaving: Boolean = false,
         val showDeleteDialog: Boolean = false
     ) : DiaryEntryEditUiState

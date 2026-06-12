@@ -34,6 +34,7 @@ data class SettingsUiState(
 
 sealed interface SettingsUiEvent {
     data object NavigateToGoals : SettingsUiEvent
+    data object NavigateToPhysicalProfile : SettingsUiEvent
     data object ShowLanguageDialog : SettingsUiEvent
     data object ShowThemeDialog : SettingsUiEvent
     data object SignOut : SettingsUiEvent
@@ -89,6 +90,10 @@ class SettingsViewModel @Inject constructor(
 
     fun onNavigateToGoals() {
         viewModelScope.launch { _events.send(SettingsUiEvent.NavigateToGoals) }
+    }
+
+    fun onNavigateToPhysicalProfile() {
+        viewModelScope.launch { _events.send(SettingsUiEvent.NavigateToPhysicalProfile) }
     }
 
     fun onShowThemeDialog() {

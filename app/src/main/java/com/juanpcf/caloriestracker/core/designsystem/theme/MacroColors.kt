@@ -16,9 +16,11 @@ object MacroColors {
     val protein: Color = Color(0xFF4CAF50)   // Green — Primary
     val carbs: Color   = Color(0xFF4A90E2)   // Blue  — Secondary
     val fat: Color     = Color(0xFFFF9800)   // Orange — Tertiary
+    val sugar: Color   = Color(0xFFE91E63)   // Pink — sugar (subconjunto de carbos)
 
     // Track colors (low-opacity versions for ring/bar backgrounds)
     val proteinTrack: Color = Color(0xFF4CAF50).copy(alpha = 0.15f)
     val carbsTrack: Color   = Color(0xFF4A90E2).copy(alpha = 0.15f)
     val fatTrack: Color     = Color(0xFFFF9800).copy(alpha = 0.15f)
+    val sugarTrack: Color   = Color(0xFFE91E63).copy(alpha = 0.15f)
 }

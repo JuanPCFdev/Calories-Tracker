@@ -19,7 +19,8 @@ class GetWeeklyMacroTrendsUseCase @Inject constructor(private val repository: Di
                 calories = dayEntries.sumOf { it.caloriesSnapshot },
                 protein = dayEntries.sumOf { it.proteinSnapshot },
                 carbs = dayEntries.sumOf { it.carbsSnapshot },
-                fat = dayEntries.sumOf { it.fatSnapshot }
+                fat = dayEntries.sumOf { it.fatSnapshot },
+                sugar = dayEntries.sumOf { it.sugarSnapshot }
             )
         }
     }

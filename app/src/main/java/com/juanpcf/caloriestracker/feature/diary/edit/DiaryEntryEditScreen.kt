@@ -127,6 +127,7 @@ fun DiaryEntryEditScreen(
                     onProteinChange = viewModel::onProteinChange,
                     onCarbsChange = viewModel::onCarbsChange,
                     onFatChange = viewModel::onFatChange,
+                    onSugarChange = viewModel::onSugarChange,
                     onSave = viewModel::onSave,
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -163,6 +164,7 @@ private fun DiaryEntryEditContent(
     onProteinChange: (String) -> Unit,
     onCarbsChange: (String) -> Unit,
     onFatChange: (String) -> Unit,
+    onSugarChange: (String) -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -227,6 +229,16 @@ private fun DiaryEntryEditContent(
                 modifier = Modifier.weight(1f)
             )
         }
+
+        // Editable macro fields — row 3: Sugar
+        OutlinedTextField(
+            value = state.editedSugar,
+            onValueChange = onSugarChange,
+            label = { Text(stringResource(R.string.label_sugar)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+        )
 
         // Servings field
         OutlinedTextField(

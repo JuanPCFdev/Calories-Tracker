@@ -48,6 +48,7 @@ import com.juanpcf.caloriestracker.domain.model.Theme
 @Composable
 fun SettingsScreen(
     onNavigateToGoals: () -> Unit,
+    onNavigateToPhysicalProfile: () -> Unit,
     onSignOut: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
@@ -62,6 +63,7 @@ fun SettingsScreen(
         viewModel.events.collect { event ->
             when (event) {
                 is SettingsUiEvent.NavigateToGoals -> onNavigateToGoals()
+                is SettingsUiEvent.NavigateToPhysicalProfile -> onNavigateToPhysicalProfile()
                 is SettingsUiEvent.ShowThemeDialog -> showThemeDialog = true
                 is SettingsUiEvent.ShowLanguageDialog -> showLanguageDialog = true
                 is SettingsUiEvent.SignOut -> onSignOut()
@@ -190,6 +192,31 @@ fun SettingsScreen(
                             modifier = Modifier.clickable { viewModel.onShowLanguageDialog() }
                         )
                     }
+                }
+            }
+
+            item { Spacer(modifier = Modifier.height(8.dp)) }
+
+            // ── Profile section ──────────────────────────────────────────
+            item {
+                SettingsSectionHeader(stringResource(R.string.settings_profile))
+            }
+            item {
+                ElevatedCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_profile_physical)) },
+                        trailingContent = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                contentDescription = null
+                            )
+                        },
+                        modifier = Modifier.clickable { viewModel.onNavigateToPhysicalProfile() }
+                    )
                 }
             }
 

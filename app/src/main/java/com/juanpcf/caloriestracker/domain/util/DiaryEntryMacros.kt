@@ -9,13 +9,14 @@ import com.juanpcf.caloriestracker.domain.model.MacroTotals
  * snapshots actuales sin escalar.
  */
 fun DiaryEntry.macrosScaledTo(newServings: Double): MacroTotals {
-    val current = MacroTotals(caloriesSnapshot, proteinSnapshot, carbsSnapshot, fatSnapshot)
+    val current = MacroTotals(caloriesSnapshot, proteinSnapshot, carbsSnapshot, fatSnapshot, sugarSnapshot)
     if (servings <= 0.0 || newServings <= 0.0) return current
     val factor = newServings / servings
     return MacroTotals(
         calories = caloriesSnapshot * factor,
         protein = proteinSnapshot * factor,
         carbs = carbsSnapshot * factor,
-        fat = fatSnapshot * factor
+        fat = fatSnapshot * factor,
+        sugar = sugarSnapshot * factor
     )
 }

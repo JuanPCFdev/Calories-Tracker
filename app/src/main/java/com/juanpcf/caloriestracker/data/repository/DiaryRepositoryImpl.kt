@@ -30,7 +30,8 @@ class DiaryRepositoryImpl @Inject constructor(
                 calories = proj?.calories ?: 0.0,
                 protein  = proj?.protein  ?: 0.0,
                 carbs    = proj?.carbs    ?: 0.0,
-                fat      = proj?.fat      ?: 0.0
+                fat      = proj?.fat      ?: 0.0,
+                sugar    = proj?.sugar    ?: 0.0
             )
         }
 
@@ -67,18 +68,20 @@ class DiaryRepositoryImpl @Inject constructor(
         food = Food(
             id = foodId, name = foodName, calories = caloriesSnapshot,
             protein = proteinSnapshot, carbs = carbsSnapshot, fat = fatSnapshot,
+            sugar = sugarSnapshot,
             servingSize = 1.0, servingUnit = "serving", source = FoodSource.USDA
         ),
         date = date, mealType = mealType, servings = servings,
         caloriesSnapshot = caloriesSnapshot, proteinSnapshot = proteinSnapshot,
-        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot, syncedAt = syncedAt,
+        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot, sugarSnapshot = sugarSnapshot,
+        syncedAt = syncedAt,
         createdAt = createdAt
     )
 
     private fun DiaryEntry.toEntity() = DiaryEntryEntity(
         id = id, userId = userId, foodId = food.id, foodName = food.name,
         caloriesSnapshot = caloriesSnapshot, proteinSnapshot = proteinSnapshot,
-        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot,
+        carbsSnapshot = carbsSnapshot, fatSnapshot = fatSnapshot, sugarSnapshot = sugarSnapshot,
         servings = servings, mealType = mealType, date = date,
         createdAt = createdAt, syncedAt = syncedAt
     )

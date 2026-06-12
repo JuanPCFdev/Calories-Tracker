@@ -10,6 +10,9 @@ import com.juanpcf.caloriestracker.domain.usecase.diary.DeleteDiaryEntryUseCase
 import com.juanpcf.caloriestracker.domain.usecase.diary.GetDailyTotalsUseCase
 import com.juanpcf.caloriestracker.domain.usecase.diary.GetDiaryForDateUseCase
 import com.juanpcf.caloriestracker.domain.usecase.goals.GetUserGoalsUseCase
+import com.juanpcf.caloriestracker.domain.usecase.profile.GetUserPhysicalProfileUseCase
+import com.juanpcf.caloriestracker.domain.model.EnergyBalance
+import com.juanpcf.caloriestracker.domain.util.NutritionCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +34,7 @@ class DiaryViewModel @Inject constructor(
     private val addDiaryEntry: AddDiaryEntryUseCase,
     private val deleteDiaryEntry: DeleteDiaryEntryUseCase,
     private val getUserGoals: GetUserGoalsUseCase,
+    private val getUserPhysicalProfile: GetUserPhysicalProfileUseCase,
     private val authRepository: AuthRepository,
     private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
@@ -44,13 +48,22 @@ class DiaryViewModel @Inject constructor(
             getDiaryForDate(userId, date),
             getDailyTotals(userId, date),
             getUserGoals(userId),
-            networkMonitor.isOnline
-        ) { entries, totals, goals, isOnline ->
+            networkMonitor.isOnline,
+            getUserPhysicalProfile(userId)
+        ) { entries, totals, goals, isOnline, profile ->
+            val balance = profile?.let {
+                EnergyBalance(
+                    consumed = totals.calories,
+                    burned = NutritionCalculator.tdee(it, date),
+                    burnedIsEstimated = true
+                )
+            }
             DiaryUiState(
                 selectedDate = date,
                 entries = entries,
                 totals = totals,
                 goals = goals,
+                energyBalance = balance,
                 isLoading = false,
                 isOffline = !isOnline
             )

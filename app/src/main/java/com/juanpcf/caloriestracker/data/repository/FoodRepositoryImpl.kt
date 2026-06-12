@@ -72,6 +72,7 @@ class FoodRepositoryImpl @Inject constructor(
             protein = obj["protein"]?.jsonPrimitive?.double ?: 0.0,
             carbs = obj["carbs"]?.jsonPrimitive?.double ?: 0.0,
             fat = obj["fat"]?.jsonPrimitive?.double ?: 0.0,
+            sugar = obj["sugar"]?.jsonPrimitive?.double,
             servingSize = obj["servingSize"]?.jsonPrimitive?.double ?: 100.0,
             servingUnit = obj["servingUnit"]?.jsonPrimitive?.content ?: "g",
             source = FoodSource.AI

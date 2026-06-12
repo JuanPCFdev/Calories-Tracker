@@ -19,6 +19,7 @@ import com.juanpcf.caloriestracker.feature.camera_ai.AiResultScreen
 import com.juanpcf.caloriestracker.feature.diary.DiaryScreen
 import com.juanpcf.caloriestracker.feature.diary.edit.DiaryEntryEditScreen
 import com.juanpcf.caloriestracker.feature.settings.GoalsScreen
+import com.juanpcf.caloriestracker.feature.settings.PhysicalProfileScreen
 import com.juanpcf.caloriestracker.feature.settings.SettingsScreen
 
 @Composable
@@ -70,7 +71,8 @@ fun CaloriesTrackerNavHost(
                 DiaryScreen(
                     onNavigateToEditEntry = { entryId ->
                         navController.navigate(DiaryEntryEdit(entryId))
-                    }
+                    },
+                    onNavigateToProfile = { navController.navigate(PhysicalProfile) }
                 )
             }
             composable<Analytics> {
@@ -79,6 +81,7 @@ fun CaloriesTrackerNavHost(
             composable<Settings> {
                 SettingsScreen(
                     onNavigateToGoals = { navController.navigate(Goals) },
+                    onNavigateToPhysicalProfile = { navController.navigate(PhysicalProfile) },
                     onSignOut = {
                         navController.navigate(AuthGraph) {
                             popUpTo(MainGraph) { inclusive = true }
@@ -88,6 +91,11 @@ fun CaloriesTrackerNavHost(
             }
             composable<Goals> {
                 GoalsScreen(
+                    onNavigateBack = { navController.popBackStack() }
+                )
+            }
+            composable<PhysicalProfile> {
+                PhysicalProfileScreen(
                     onNavigateBack = { navController.popBackStack() }
                 )
             }

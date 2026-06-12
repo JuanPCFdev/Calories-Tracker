@@ -24,6 +24,7 @@ data class DiaryEntryEntity(
     @ColumnInfo(name = "protein_snapshot") val proteinSnapshot: Double,
     @ColumnInfo(name = "carbs_snapshot") val carbsSnapshot: Double,
     @ColumnInfo(name = "fat_snapshot") val fatSnapshot: Double,
+    @ColumnInfo(name = "sugar_snapshot", defaultValue = "0") val sugarSnapshot: Double = 0.0,
     @ColumnInfo(name = "servings") val servings: Double,
     @ColumnInfo(name = "meal_type") val mealType: MealType,
     @ColumnInfo(name = "date") val date: LocalDate,

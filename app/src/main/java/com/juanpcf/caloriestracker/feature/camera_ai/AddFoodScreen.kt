@@ -452,7 +452,7 @@ private fun captureImage(
 
 private fun Food.toAiResultRoute(): AiResult = AiResult(
     foodId = id, foodName = name, calories = calories,
-    protein = protein, carbs = carbs, fat = fat,
+    protein = protein, carbs = carbs, fat = fat, sugar = sugar ?: 0.0,
     servingSize = servingSize, servingUnit = servingUnit,
     isUnrecognized = false
 )

@@ -48,6 +48,8 @@ fun NutritionBarsCard(
     carbsGoal: Double,
     fat: Double,
     fatGoal: Double,
+    sugar: Double,
+    sugarGoal: Double,
     modifier: Modifier = Modifier,
     title: String? = null
 ) {
@@ -116,6 +118,16 @@ fun NutritionBarsCard(
                 goal = fatGoal,
                 color = MacroColors.fat,
                 trackColor = MacroColors.fatTrack
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            MacroBar(
+                label = stringResource(R.string.label_sugar),
+                value = sugar,
+                goal = sugarGoal,
+                color = MacroColors.sugar,
+                trackColor = MacroColors.sugarTrack
             )
         }
     }

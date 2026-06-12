@@ -7,5 +7,6 @@ data class DayMacros(
     val calories: Double,
     val protein: Double,
     val carbs: Double,
-    val fat: Double
+    val fat: Double,
+    val sugar: Double = 0.0
 )

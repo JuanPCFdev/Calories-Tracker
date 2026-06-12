@@ -5,5 +5,6 @@ data class UserGoals(
     val dailyCalories: Int,
     val dailyProtein: Int,
     val dailyCarbs: Int,
-    val dailyFat: Int
+    val dailyFat: Int,
+    val dailySugar: Int = 0
 )

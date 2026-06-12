@@ -23,7 +23,8 @@ class DiaryEntryMacrosTest {
         caloriesSnapshot = 100.0 * servings,
         proteinSnapshot = 20.0 * servings,
         carbsSnapshot = 0.0,
-        fatSnapshot = 5.0 * servings
+        fatSnapshot = 5.0 * servings,
+        sugarSnapshot = 8.0 * servings
     )
 
     @Test
@@ -33,6 +34,7 @@ class DiaryEntryMacrosTest {
         assertEquals(40.0, scaled.protein, 0.0001)
         assertEquals(0.0, scaled.carbs, 0.0001)
         assertEquals(10.0, scaled.fat, 0.0001)
+        assertEquals(16.0, scaled.sugar, 0.0001)
     }
 
     @Test

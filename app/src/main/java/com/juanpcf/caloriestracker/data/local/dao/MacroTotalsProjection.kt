@@ -4,5 +4,6 @@ data class MacroTotalsProjection(
     val calories: Double?,
     val protein: Double?,
     val carbs: Double?,
-    val fat: Double?
+    val fat: Double?,
+    val sugar: Double?
 )

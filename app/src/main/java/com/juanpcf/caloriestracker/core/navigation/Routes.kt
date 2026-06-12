@@ -18,6 +18,7 @@ data class AiResult(
     val protein: Double,
     val carbs: Double,
     val fat: Double,
+    val sugar: Double = 0.0,
     val servingSize: Double,
     val servingUnit: String,
     val isUnrecognized: Boolean = false
@@ -26,6 +27,7 @@ data class AiResult(
 @Serializable object Analytics
 @Serializable object Settings
 @Serializable object Goals
+@Serializable object PhysicalProfile
 
 @Serializable
 data class DiaryEntryEdit(val entryId: String)

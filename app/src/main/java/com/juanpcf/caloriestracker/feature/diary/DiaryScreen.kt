@@ -60,6 +60,7 @@ private val TIME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm a").withZone(Zon
 @Composable
 fun DiaryScreen(
     onNavigateToEditEntry: (entryId: String) -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: DiaryViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -184,10 +185,33 @@ fun DiaryScreen(
                             goal = goals?.dailyFat?.toDouble() ?: 0.0,
                             color = MacroColors.fat
                         )
+                        MacroRingChip(
+                            label = stringResource(R.string.label_sugar),
+                            consumed = totals.sugar,
+                            goal = goals?.dailySugar?.toDouble() ?: 0.0,
+                            color = MacroColors.sugar
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
                 }
+            }
+
+            // --- Energy balance (consumed vs burned) ---
+            item {
+                val balance = uiState.energyBalance
+                if (balance != null) {
+                    EnergyBalanceCard(
+                        balance = balance,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                    )
+                } else {
+                    ProfileCtaCard(
+                        onClick = onNavigateToProfile,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             // --- Recent Activity Section Header ---
@@ -273,6 +297,99 @@ fun DiaryScreen(
 
             // Bottom spacing
             item { Spacer(modifier = Modifier.height(16.dp)) }
+        }
+    }
+}
+
+@Composable
+private fun EnergyBalanceCard(
+    balance: com.juanpcf.caloriestracker.domain.model.EnergyBalance,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(R.string.energy_balance_title),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                EnergyStat(
+                    label = stringResource(R.string.energy_consumed),
+                    value = balance.consumed.toInt(),
+                    color = MacroColors.carbs
+                )
+                EnergyStat(
+                    label = stringResource(R.string.energy_burned),
+                    value = balance.burned.toInt(),
+                    color = MacroColors.fat
+                )
+                EnergyStat(
+                    label = stringResource(R.string.energy_net),
+                    value = balance.net.toInt(),
+                    color = if (balance.net > 0) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.primary,
+                    showSign = true
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.energy_burned_estimated),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun EnergyStat(
+    label: String,
+    value: Int,
+    color: androidx.compose.ui.graphics.Color,
+    showSign: Boolean = false
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = if (showSign && value > 0) "+$value" else "$value",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = color
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun ProfileCtaCard(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(onClick = onClick, modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(R.string.energy_profile_cta_title),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.energy_profile_cta_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextButton(onClick = onClick) {
+                Text(stringResource(R.string.energy_profile_cta_button))
+            }
         }
     }
 }
