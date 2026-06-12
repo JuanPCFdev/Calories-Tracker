@@ -17,11 +17,13 @@ Respond ONLY with a valid JSON object in this exact format, no other text:
   "protein": 8.5,
   "carbs": 35.0,
   "fat": 9.0,
-  "sugar": 5.0
+  "sugar": 5.0,
+  "confidence": "medium"
 }
 Rules:
 - servingUnit must be one of: "g", "ml", "oz", "piece"
 - "sugar" is the sugar portion of the carbohydrates, in grams (must be <= carbs). Use 0 if unknown.
+- "confidence" must be one of: "high", "medium", "low" — how sure you are about the portion size.
 - All numeric values must be for the serving size specified
 - If you cannot identify the food, respond with: {"error": "UNRECOGNIZED"}
 - Never include explanations, markdown, or any text outside the JSON object
@@ -33,8 +35,14 @@ private fun languageInstruction(languageTag: String) = when (languageTag) {
 }
 
 private fun imageSystemPrompt(languageTag: String) = """
-You are a nutrition expert AI. The user will send you an image of food or a nutrition label.
-Analyze it and estimate (or read from the label) the nutritional information.
+You are a nutrition expert AI. The user will send you a photo of a prepared food or dish.
+Identify the food AND estimate the TOTAL portion size actually shown in the photo (in grams), then
+report all nutrition values FOR THAT VISIBLE PORTION (not for a generic 100g serving):
+- Set "servingSize" to your best estimate of the grams of food visible in the photo.
+- Use any reference objects in the frame to calibrate size: a hand, fork, spoon, a standard plate or
+  bowl, or visible packaging. A typical dinner plate is ~27 cm; an adult fist ≈ 1 cup ≈ 150 g.
+- Set "confidence" to "high" when a clear reference object makes the size reliable, "medium" for a
+  reasonable guess, "low" when the portion size is ambiguous or hard to gauge.
 ${languageInstruction(languageTag)}
 $RESPONSE_FORMAT
 """.trimIndent()

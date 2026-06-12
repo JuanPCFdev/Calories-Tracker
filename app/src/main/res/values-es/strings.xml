@@ -129,6 +129,7 @@
     <string name="addfood_analyzing_food">Analizando comida…</string>
     <string name="addfood_analyzing_label">Leyendo etiqueta…</string>
     <string name="addfood_label_hint">Apuntá la cámara a la tabla nutricional</string>
+    <string name="addfood_camera_hint">Incluí tu mano o un tenedor para estimar mejor la porción</string>
 
     <!-- Scanner -->
     <string name="scanner_hint">Apuntá la cámara al código</string>
@@ -177,6 +178,10 @@
     <string name="ai_result_unrecognized_banner">La IA no pudo identificar este alimento. Por favor, completá los datos nutricionales manualmente.</string>
     <string name="ai_result_title_unrecognized">Alimento no reconocido — Editá los detalles</string>
     <string name="label_unit">Unidad</string>
+    <string name="confidence_high">Porción estimada: confianza alta</string>
+    <string name="confidence_medium">Porción estimada: confianza media</string>
+    <string name="confidence_low">Porción estimada: confianza baja</string>
+    <string name="ai_result_review_portion">Revisá el peso estimado — ajustalo si no cuadra.</string>
 
     <!-- Edit Entry screen -->
     <string name="title_edit_entry">Editar registro</string>

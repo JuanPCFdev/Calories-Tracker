@@ -157,7 +157,8 @@ fun AddFoodScreen(
                             imageCaptureUseCase = imageCaptureUseCase,
                             uiState = uiState,
                             hint = if (uiState.inputMode == InputMode.LABEL)
-                                stringResource(R.string.addfood_label_hint) else null,
+                                stringResource(R.string.addfood_label_hint)
+                            else stringResource(R.string.addfood_camera_hint),
                             onCapture = { bitmap -> viewModel.onCaptureImage(bitmap) },
                             onReset = viewModel::reset
                         )
@@ -454,5 +455,6 @@ private fun Food.toAiResultRoute(): AiResult = AiResult(
     foodId = id, foodName = name, calories = calories,
     protein = protein, carbs = carbs, fat = fat, sugar = sugar ?: 0.0,
     servingSize = servingSize, servingUnit = servingUnit,
+    confidence = confidence?.name ?: "",
     isUnrecognized = false
 )

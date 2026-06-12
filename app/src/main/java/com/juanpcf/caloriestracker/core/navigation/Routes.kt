@@ -21,6 +21,7 @@ data class AiResult(
     val sugar: Double = 0.0,
     val servingSize: Double,
     val servingUnit: String,
+    val confidence: String = "",
     val isUnrecognized: Boolean = false
 )
 

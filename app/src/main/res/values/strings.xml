@@ -130,6 +130,7 @@
     <string name="addfood_analyzing_food">Analyzing food…</string>
     <string name="addfood_analyzing_label">Reading label…</string>
     <string name="addfood_label_hint">Point the camera at the nutrition facts table</string>
+    <string name="addfood_camera_hint">Include your hand or a fork for a better portion estimate</string>
 
     <!-- Scanner -->
     <string name="scanner_hint">Point camera at barcode</string>
@@ -178,6 +179,10 @@
     <string name="ai_result_unrecognized_banner">The AI could not identify this food. Please fill in the nutritional details manually.</string>
     <string name="ai_result_title_unrecognized">Unrecognized Food — Edit Details</string>
     <string name="label_unit">Unit</string>
+    <string name="confidence_high">Portion estimate: high confidence</string>
+    <string name="confidence_medium">Portion estimate: medium confidence</string>
+    <string name="confidence_low">Portion estimate: low confidence</string>
+    <string name="ai_result_review_portion">Double-check the estimated weight — adjust it if it looks off.</string>
 
     <!-- Edit Entry screen -->
     <string name="title_edit_entry">Edit Entry</string>

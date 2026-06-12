@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.juanpcf.caloriestracker.R
 import com.juanpcf.caloriestracker.core.designsystem.components.NutritionBarsCard
+import com.juanpcf.caloriestracker.domain.model.EstimateConfidence
 import com.juanpcf.caloriestracker.domain.model.MealType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -214,6 +215,27 @@ private fun AiResultContent(
                         onUnitSelected = onServingUnitChange,
                         modifier = Modifier.weight(1f)
                     )
+                }
+
+                // Confidence of the AI portion estimate (only for photo recognition)
+                uiState.confidence?.let { conf ->
+                    val (labelRes, color) = when (conf) {
+                        EstimateConfidence.HIGH -> R.string.confidence_high to MaterialTheme.colorScheme.primary
+                        EstimateConfidence.MEDIUM -> R.string.confidence_medium to MaterialTheme.colorScheme.tertiary
+                        EstimateConfidence.LOW -> R.string.confidence_low to MaterialTheme.colorScheme.error
+                    }
+                    Text(
+                        text = stringResource(labelRes),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = color
+                    )
+                    if (conf != EstimateConfidence.HIGH) {
+                        Text(
+                            text = stringResource(R.string.ai_result_review_portion),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
 
                 Text(

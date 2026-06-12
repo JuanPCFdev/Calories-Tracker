@@ -8,6 +8,21 @@ enum class Language(val tag: String) { EN("en"), ES("es") }
 /** Sexo biológico — requerido por la fórmula Mifflin-St Jeor (constante +5 / −161). */
 enum class Gender { MALE, FEMALE }
 
+/** Confianza de la IA en la estimación de porción desde la foto. Dato efímero (no se persiste). */
+enum class EstimateConfidence {
+    HIGH, MEDIUM, LOW;
+
+    companion object {
+        /** Mapea el valor crudo del API (tolerante a mayúsculas/espacios/nulos). */
+        fun fromApi(raw: String?): EstimateConfidence? = when (raw?.trim()?.uppercase()) {
+            "HIGH" -> HIGH
+            "MEDIUM" -> MEDIUM
+            "LOW" -> LOW
+            else -> null
+        }
+    }
+}
+
 /**
  * Nivel de actividad física con su multiplicador sobre el BMR para obtener el TDEE.
  * Factores estándar de la fórmula de Harris-Benedict/Mifflin.

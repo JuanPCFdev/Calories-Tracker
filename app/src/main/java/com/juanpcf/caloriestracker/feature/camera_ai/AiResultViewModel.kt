@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import com.juanpcf.caloriestracker.R
 import com.juanpcf.caloriestracker.core.navigation.AiResult
 import com.juanpcf.caloriestracker.domain.model.DiaryEntry
+import com.juanpcf.caloriestracker.domain.model.EstimateConfidence
 import com.juanpcf.caloriestracker.domain.model.Food
 import com.juanpcf.caloriestracker.domain.model.FoodSource
 import com.juanpcf.caloriestracker.domain.model.MealType
@@ -37,6 +38,7 @@ data class AiResultUiState(
     val sugar: String = "",
     val servingSize: String = "",
     val servingUnit: String = "g",
+    val confidence: EstimateConfidence? = null,
     val isEditable: Boolean = true,
     val isLoading: Boolean = false,
     val error: String? = null
@@ -66,6 +68,7 @@ class AiResultViewModel @Inject constructor(
             sugar = if (args.sugar == 0.0 && args.isUnrecognized) "" else formatNutrient(args.sugar),
             servingSize = if (args.servingSize == 0.0 && args.isUnrecognized) "" else args.servingSize.toString(),
             servingUnit = args.servingUnit,
+            confidence = EstimateConfidence.fromApi(args.confidence),
             isEditable = true
         )
     )

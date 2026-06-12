@@ -6,6 +6,7 @@ import com.juanpcf.caloriestracker.data.remote.openrouter.ChatRequestBuilder
 import com.juanpcf.caloriestracker.data.remote.openrouter.OpenRouterApi
 import com.juanpcf.caloriestracker.data.remote.openrouter.dto.ChatRequest
 import com.juanpcf.caloriestracker.domain.model.AppPreferences
+import com.juanpcf.caloriestracker.domain.model.EstimateConfidence
 import com.juanpcf.caloriestracker.domain.model.Food
 import com.juanpcf.caloriestracker.domain.model.FoodSource
 import com.juanpcf.caloriestracker.domain.repository.AppPreferencesRepository
@@ -75,7 +76,8 @@ class FoodRepositoryImpl @Inject constructor(
             sugar = obj["sugar"]?.jsonPrimitive?.double,
             servingSize = obj["servingSize"]?.jsonPrimitive?.double ?: 100.0,
             servingUnit = obj["servingUnit"]?.jsonPrimitive?.content ?: "g",
-            source = FoodSource.AI
+            source = FoodSource.AI,
+            confidence = EstimateConfidence.fromApi(obj["confidence"]?.jsonPrimitive?.content)
         )
     }
 }

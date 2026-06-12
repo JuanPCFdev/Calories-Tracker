@@ -13,5 +13,8 @@ data class Food(
     val servingSize: Double,
     val servingUnit: String,
     val barcode: String? = null,
-    val source: FoodSource
+    val source: FoodSource,
+    // Confianza de la estimación de porción por IA. Efímero: solo viaja del repo a la pantalla de
+    // resultado, NO se persiste en el diario.
+    val confidence: EstimateConfidence? = null
 )
