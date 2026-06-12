@@ -28,5 +28,6 @@ data class DiaryEntryEntity(
     @ColumnInfo(name = "meal_type") val mealType: MealType,
     @ColumnInfo(name = "date") val date: LocalDate,
     @ColumnInfo(name = "created_at") val createdAt: Instant,
-    @ColumnInfo(name = "synced_at") val syncedAt: Instant?
+    @ColumnInfo(name = "synced_at") val syncedAt: Instant?,
+    @ColumnInfo(name = "is_deleted", defaultValue = "0") val isDeleted: Boolean = false
 )

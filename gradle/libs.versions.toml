@@ -1,13 +1,13 @@
 [versions]
-agp = "8.13.2"
+agp = "9.2.1"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
-kotlin = "2.1.10"
-ksp = "2.1.10-1.0.29"
+kotlin = "2.2.10"
+ksp = "2.3.2"
 composeBom = "2024.09.00"
 coroutines = "1.10.2"
 kotlinxSerializationJson = "1.8.1"
@@ -16,7 +16,7 @@ hilt = "2.56"
 hiltNavigationCompose = "1.2.0"
 hiltWork = "1.2.0"
 navigationCompose = "2.9.0"
-room = "2.7.1"
+room = "2.7.2"
 datastore = "1.1.4"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
@@ -27,6 +27,10 @@ mlkitBarcode = "17.3.0"
 coil = "3.1.0"
 workmanager = "2.10.1"
 coreKtxVersion = "1.18.0"
+timber = "5.0.1"
+crashlyticsPlugin = "3.0.3"
+mockk = "1.13.13"
+turbine = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -79,6 +83,7 @@ datastore-preferences = { module = "androidx.datastore:datastore-preferences", v
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 
 # CameraX
@@ -101,12 +106,22 @@ workmanager-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "wo
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 
+# Logging
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+# Testing
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.4" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsPlugin" }
 room = { id = "androidx.room", version.ref = "room" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

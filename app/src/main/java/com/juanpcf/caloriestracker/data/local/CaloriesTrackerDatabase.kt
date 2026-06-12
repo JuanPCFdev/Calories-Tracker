@@ -13,7 +13,7 @@ import com.juanpcf.caloriestracker.data.local.entity.UserGoalsEntity
 
 @Database(
     entities = [FoodCacheEntity::class, DiaryEntryEntity::class, UserGoalsEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(Converters::class)

@@ -17,6 +17,7 @@ import com.juanpcf.caloriestracker.data.firebase.FirestoreDiaryRepository
 import com.juanpcf.caloriestracker.data.local.dao.DiaryEntryDao
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -72,6 +73,7 @@ class FirestoreSyncWorker @AssistedInject constructor(
             pullRemoteEntries(userId)
             Result.success()
         } catch (e: Exception) {
+            Timber.w(e, "Sync con Firestore falló (intento ${runAttemptCount + 1}/$MAX_RETRY_ATTEMPTS), reintentando")
             Result.retry()
         }
     }
@@ -79,8 +81,14 @@ class FirestoreSyncWorker @AssistedInject constructor(
     private suspend fun pushPendingEntries(userId: String) {
         val pending = diaryEntryDao.getEntriesNotSynced(userId)
         pending.forEach { entity ->
-            firestoreRepository.writeEntry(userId, entity)
-            diaryEntryDao.markAsSynced(entity.id, Instant.now().toEpochMilli())
+            if (entity.isDeleted) {
+                // Tombstone: borrar del remoto y recién ahí hacer el hard-delete local.
+                firestoreRepository.deleteEntry(userId, entity.id)
+                diaryEntryDao.hardDeleteById(entity.id)
+            } else {
+                firestoreRepository.writeEntry(userId, entity)
+                diaryEntryDao.markAsSynced(entity.id, Instant.now().toEpochMilli())
+            }
         }
     }
 

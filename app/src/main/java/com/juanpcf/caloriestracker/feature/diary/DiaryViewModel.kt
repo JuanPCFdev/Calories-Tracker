@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -79,7 +80,7 @@ class DiaryViewModel @Inject constructor(
             try {
                 deleteDiaryEntry(entry.id)
             } catch (e: Exception) {
-                // Error handled via uiState in a future iteration
+                Timber.e(e, "No se pudo borrar la entrada ${entry.id} desde el diario")
             }
         }
     }

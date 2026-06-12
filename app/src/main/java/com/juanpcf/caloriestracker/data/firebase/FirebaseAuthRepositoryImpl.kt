@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
 
@@ -29,6 +30,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         runCatching {
             val profile = auth.signInWithEmailAndPassword(email, password).await().user!!.toProfile()
             runCatching { firestoreUserRepository.writeUserProfile(profile) }
+                .onFailure { Timber.e(it, "No se pudo escribir el perfil en Firestore para uid=${profile.uid}") }
             profile
         }
 
@@ -37,6 +39,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             val profile = auth.signInWithCredential(credential).await().user!!.toProfile()
             runCatching { firestoreUserRepository.writeUserProfile(profile) }
+                .onFailure { Timber.e(it, "No se pudo escribir el perfil en Firestore para uid=${profile.uid}") }
             profile
         }
 
@@ -44,6 +47,7 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         runCatching {
             val profile = auth.createUserWithEmailAndPassword(email, password).await().user!!.toProfile()
             runCatching { firestoreUserRepository.writeUserProfile(profile) }
+                .onFailure { Timber.e(it, "No se pudo escribir el perfil en Firestore para uid=${profile.uid}") }
             profile
         }
 

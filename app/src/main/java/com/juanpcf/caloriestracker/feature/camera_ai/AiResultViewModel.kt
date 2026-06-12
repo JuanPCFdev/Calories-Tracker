@@ -13,6 +13,8 @@ import com.juanpcf.caloriestracker.domain.model.FoodSource
 import com.juanpcf.caloriestracker.domain.model.MealType
 import com.juanpcf.caloriestracker.domain.repository.AuthRepository
 import com.juanpcf.caloriestracker.domain.usecase.diary.AddDiaryEntryUseCase
+import com.juanpcf.caloriestracker.domain.util.formatNutrient
+import com.juanpcf.caloriestracker.domain.util.toNutrientOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +23,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.time.LocalDate
-import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
@@ -92,11 +94,11 @@ class AiResultViewModel @Inject constructor(
         }
 
         val name = state.foodName.trim()
-        val calories = state.calories.toCleanDouble()
-        val protein = state.protein.toCleanDouble()
-        val carbs = state.carbs.toCleanDouble()
-        val fat = state.fat.toCleanDouble()
-        val servingSize = state.servingSize.toCleanDouble()
+        val calories = state.calories.toNutrientOrNull()
+        val protein = state.protein.toNutrientOrNull()
+        val carbs = state.carbs.toNutrientOrNull()
+        val fat = state.fat.toNutrientOrNull()
+        val servingSize = state.servingSize.toNutrientOrNull()
 
         if (name.isBlank() || calories == null || protein == null || carbs == null || fat == null || servingSize == null) {
             viewModelScope.launch {
@@ -137,19 +139,10 @@ class AiResultViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
                 _uiEvents.send(AiResultUiEvent.NavigateToDiary)
             } catch (e: Exception) {
+                Timber.e(e, "No se pudo agregar la entrada al diario")
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
                 _uiEvents.send(AiResultUiEvent.ShowError(R.string.error_generic))
             }
         }
     }
-
-    private fun formatNutrient(value: Double): String =
-        if (value == value.toLong().toDouble()) value.toLong().toString()
-        else String.format(Locale.US, "%.1f", value)
 }
-
-private fun String.toCleanDouble(): Double? =
-    this.trim()
-        .replace(",", ".")           // handle locale decimal commas
-        .replace(Regex("[^0-9.]"), "") // strip remaining non-numeric chars
-        .toDoubleOrNull()

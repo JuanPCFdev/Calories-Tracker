@@ -7,6 +7,7 @@ import com.juanpcf.caloriestracker.domain.model.UserGoals
 import com.juanpcf.caloriestracker.domain.repository.UserGoalsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
@@ -23,8 +24,11 @@ class UserGoalsRepositoryImpl @Inject constructor(
         dao.getGoalsOnce(userId)?.toDomain()
 
     override suspend fun saveGoals(goals: UserGoals) {
+        // Room es la fuente de verdad: el guardado local manda. La escritura remota es un espejo
+        // best-effort; si falla, se loggea (non-fatal a Crashlytics) pero no se rompe el guardado.
         dao.insertOrReplace(goals.toEntity())
         runCatching { firestoreUserRepository.writeUserGoals(goals) }
+            .onFailure { Timber.e(it, "No se pudieron escribir los objetivos en Firestore para uid=${goals.userId}") }
     }
 
     private fun UserGoalsEntity.toDomain() = UserGoals(

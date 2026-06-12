@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
@@ -57,6 +58,9 @@ android {
     room {
         schemaDirectory("$projectDir/schemas")
     }
+
+    // Expone los esquemas Room exportados como assets de androidTest para MigrationTestHelper.
+    sourceSets.getByName("androidTest").assets.srcDir("$projectDir/schemas")
 }
 
 dependencies {
@@ -112,6 +116,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.crashlytics)
     implementation(libs.play.services.auth)
 
     // CameraX
@@ -132,4 +137,14 @@ dependencies {
 
     // Icons Extended
     implementation(libs.androidx.material.icons.extended)
+
+    // Logging
+    implementation(libs.timber)
+
+    // Testing
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

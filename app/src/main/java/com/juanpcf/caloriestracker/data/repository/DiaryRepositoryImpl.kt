@@ -39,7 +39,10 @@ class DiaryRepositoryImpl @Inject constructor(
         FirestoreSyncWorker.scheduleImmediateSync(WorkManager.getInstance(context))
     }
 
-    override suspend fun deleteEntry(entryId: String) = dao.deleteById(entryId)
+    override suspend fun deleteEntry(entryId: String) {
+        dao.softDeleteById(entryId)
+        FirestoreSyncWorker.scheduleImmediateSync(WorkManager.getInstance(context))
+    }
 
     override suspend fun getEntryById(entryId: String): DiaryEntry? =
         dao.getById(entryId)?.toDomain()

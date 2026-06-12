@@ -10,6 +10,11 @@ import com.juanpcf.caloriestracker.domain.usecase.diary.DeleteDiaryEntryUseCase
 import com.juanpcf.caloriestracker.domain.usecase.diary.GetDiaryEntryUseCase
 import com.juanpcf.caloriestracker.domain.usecase.diary.UpdateDiaryEntryUseCase
 import com.juanpcf.caloriestracker.domain.model.MealType
+import com.juanpcf.caloriestracker.domain.util.formatNutrient
+import com.juanpcf.caloriestracker.domain.util.formatServings
+import com.juanpcf.caloriestracker.domain.util.macrosScaledTo
+import com.juanpcf.caloriestracker.domain.util.toDecimalOrNull
+import com.juanpcf.caloriestracker.domain.util.toNutrientOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,10 +57,10 @@ class DiaryEntryEditViewModel @Inject constructor(
                     entry = entry,
                     editedServings = formatServings(entry.servings),
                     editedMealType = entry.mealType,
-                    editedCalories = formatSnapshot(entry.caloriesSnapshot),
-                    editedProtein = formatSnapshot(entry.proteinSnapshot),
-                    editedCarbs = formatSnapshot(entry.carbsSnapshot),
-                    editedFat = formatSnapshot(entry.fatSnapshot)
+                    editedCalories = formatNutrient(entry.caloriesSnapshot),
+                    editedProtein = formatNutrient(entry.proteinSnapshot),
+                    editedCarbs = formatNutrient(entry.carbsSnapshot),
+                    editedFat = formatNutrient(entry.fatSnapshot)
                 )
             }
         }
@@ -63,15 +69,15 @@ class DiaryEntryEditViewModel @Inject constructor(
     fun onServingsChange(value: String) {
         _uiState.update { state ->
             if (state !is DiaryEntryEditUiState.Loaded) return@update state
-            val newServings = value.trim().replace(",", ".").toDoubleOrNull()
+            val newServings = value.toDecimalOrNull()
             if (newServings != null && newServings > 0.0 && state.entry.servings > 0.0) {
-                val factor = newServings / state.entry.servings
+                val scaled = state.entry.macrosScaledTo(newServings)
                 state.copy(
                     editedServings = value,
-                    editedCalories = formatSnapshot(state.entry.caloriesSnapshot * factor),
-                    editedProtein  = formatSnapshot(state.entry.proteinSnapshot  * factor),
-                    editedCarbs    = formatSnapshot(state.entry.carbsSnapshot    * factor),
-                    editedFat      = formatSnapshot(state.entry.fatSnapshot      * factor)
+                    editedCalories = formatNutrient(scaled.calories),
+                    editedProtein  = formatNutrient(scaled.protein),
+                    editedCarbs    = formatNutrient(scaled.carbs),
+                    editedFat      = formatNutrient(scaled.fat)
                 )
             } else {
                 state.copy(editedServings = value)
@@ -110,7 +116,7 @@ class DiaryEntryEditViewModel @Inject constructor(
     fun onSave() {
         val state = _uiState.value as? DiaryEntryEditUiState.Loaded ?: return
 
-        val servings = state.editedServings.trim().replace(",", ".").toDoubleOrNull()
+        val servings = state.editedServings.toDecimalOrNull()
         if (servings == null || servings <= 0) {
             viewModelScope.launch {
                 _uiEvents.send(DiaryEntryEditUiEvent.ShowError(R.string.error_invalid_servings))
@@ -118,10 +124,10 @@ class DiaryEntryEditViewModel @Inject constructor(
             return
         }
 
-        val calories = state.editedCalories.trim().replace(",", ".").replace(Regex("[^0-9.]"), "").toDoubleOrNull() ?: 0.0
-        val protein  = state.editedProtein.trim().replace(",", ".").replace(Regex("[^0-9.]"), "").toDoubleOrNull()  ?: 0.0
-        val carbs    = state.editedCarbs.trim().replace(",", ".").replace(Regex("[^0-9.]"), "").toDoubleOrNull()    ?: 0.0
-        val fat      = state.editedFat.trim().replace(",", ".").replace(Regex("[^0-9.]"), "").toDoubleOrNull()      ?: 0.0
+        val calories = state.editedCalories.toNutrientOrNull() ?: 0.0
+        val protein  = state.editedProtein.toNutrientOrNull()  ?: 0.0
+        val carbs    = state.editedCarbs.toNutrientOrNull()    ?: 0.0
+        val fat      = state.editedFat.toNutrientOrNull()      ?: 0.0
 
         val updatedEntry = state.entry.copy(
             servings = servings,
@@ -138,6 +144,7 @@ class DiaryEntryEditViewModel @Inject constructor(
                 updateEntryUseCase(updatedEntry)
                 _uiEvents.send(DiaryEntryEditUiEvent.NavigateBack)
             } catch (e: Exception) {
+                Timber.e(e, "No se pudo actualizar la entrada $entryId")
                 _uiState.update { if (it is DiaryEntryEditUiState.Loaded) it.copy(isSaving = false) else it }
                 _uiEvents.send(DiaryEntryEditUiEvent.ShowError(R.string.error_generic))
             }
@@ -150,16 +157,9 @@ class DiaryEntryEditViewModel @Inject constructor(
                 deleteEntryUseCase(entryId)
                 _uiEvents.send(DiaryEntryEditUiEvent.NavigateBack)
             } catch (e: Exception) {
+                Timber.e(e, "No se pudo borrar la entrada $entryId")
                 _uiEvents.send(DiaryEntryEditUiEvent.ShowError(R.string.error_generic))
             }
         }
     }
-
-    private fun formatServings(value: Double): String =
-        if (value == value.toLong().toDouble()) value.toLong().toString()
-        else value.toString()
-
-    private fun formatSnapshot(value: Double): String =
-        if (value == value.toLong().toDouble()) value.toLong().toString()
-        else String.format(java.util.Locale.US, "%.1f", value)
 }

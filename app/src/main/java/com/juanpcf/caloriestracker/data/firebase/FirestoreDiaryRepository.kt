@@ -28,6 +28,10 @@ class FirestoreDiaryRepository @Inject constructor(
         userDiary(userId).document(entity.id).set(data).await()
     }
 
+    suspend fun deleteEntry(userId: String, entryId: String) {
+        userDiary(userId).document(entryId).delete().await()
+    }
+
     suspend fun getEntriesSince(userId: String, fromDate: LocalDate): List<DiaryEntryEntity> {
         val snapshot = userDiary(userId)
             .whereGreaterThanOrEqualTo("date", fromDate.toEpochDay())

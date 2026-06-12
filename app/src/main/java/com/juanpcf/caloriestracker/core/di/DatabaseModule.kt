@@ -7,6 +7,7 @@ import com.juanpcf.caloriestracker.data.local.converter.Converters
 import com.juanpcf.caloriestracker.data.local.dao.DiaryEntryDao
 import com.juanpcf.caloriestracker.data.local.dao.FoodCacheDao
 import com.juanpcf.caloriestracker.data.local.dao.UserGoalsDao
+import com.juanpcf.caloriestracker.data.local.migration.ALL_MIGRATIONS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,7 @@ object DatabaseModule {
     fun provideDatabase(@ApplicationContext context: Context): CaloriesTrackerDatabase =
         Room.databaseBuilder(context, CaloriesTrackerDatabase::class.java, "calories_tracker.db")
             .addTypeConverter(Converters())
+            .addMigrations(*ALL_MIGRATIONS)
             .build()
 
     @Provides @Singleton
