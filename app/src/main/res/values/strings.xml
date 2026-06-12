@@ -102,6 +102,14 @@
     <string name="scan_barcode">Scan Barcode</string>
     <string name="ai_recognition">AI Recognition</string>
 
+    <!-- Add food (camera_ai) -->
+    <string name="addfood_tab_camera">Camera</string>
+    <string name="addfood_tab_label">Label</string>
+    <string name="addfood_tab_text">By Name</string>
+    <string name="addfood_analyzing_food">Analyzing food…</string>
+    <string name="addfood_analyzing_label">Reading label…</string>
+    <string name="addfood_label_hint">Point the camera at the nutrition facts table</string>
+
     <!-- Scanner -->
     <string name="scanner_hint">Point camera at barcode</string>
     <string name="product_not_found">Product not found</string>

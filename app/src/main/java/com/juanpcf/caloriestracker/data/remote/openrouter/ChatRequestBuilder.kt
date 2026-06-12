@@ -44,14 +44,32 @@ ${languageInstruction(languageTag)}
 $RESPONSE_FORMAT
 """.trimIndent()
 
+private fun labelSystemPrompt(languageTag: String) = """
+You are a nutrition-label reading assistant. The user will send a photo of a nutrition facts table
+(the table printed on the back or side of a packaged food).
+Read the EXACT values printed on the label. Do NOT estimate or guess — transcribe what is written.
+Label-reading rules:
+- Report the values for ONE serving, using the label's own serving size ("per serving" / "por porción").
+- If the label only shows values per 100 g/ml, set servingSize to 100 with the matching unit and report those.
+- Energy MUST be in kcal. If the label shows only kJ, convert: kcal = kJ / 4.184 (round to whole kcal).
+- Use the product name printed on the package if visible; otherwise a short generic description.
+- If the image has no readable nutrition facts table, respond with: {"error": "UNRECOGNIZED"}
+${languageInstruction(languageTag)}
+$RESPONSE_FORMAT
+""".trimIndent()
+
 object ChatRequestBuilder {
     private val json = Json { encodeDefaults = true }
 
+    // Techo de tokens de salida. Holgado para que un modelo con reasoning no trunque el JSON final.
+    private const val MAX_TOKENS = 800
+
     // OpenRouter tries each model in order on 429 / provider error. Max 3 models.
     // Vision-capable models only — image analysis requires multimodal support.
+    // Primario: modelo pago (Qwen 3.5 Flash). Fallbacks free por si el primario da error.
     private val MODELS_IMAGE = listOf(
+        "qwen/qwen3.5-flash-02-23",
         "meta-llama/llama-4-scout:free",
-        "google/gemma-4-31b-it:free",
         "qwen/qwen2.5-vl-72b-instruct:free"
     )
 
@@ -78,7 +96,26 @@ object ChatRequestBuilder {
             role = "user",
             content = json.encodeToJsonElement(userContent)
         )
-        return ChatRequest(models = MODELS_IMAGE, messages = listOf(systemMessage, userMessage))
+        return ChatRequest(models = MODELS_IMAGE, messages = listOf(systemMessage, userMessage), maxTokens = MAX_TOKENS)
+    }
+
+    fun buildLabelAnalysisRequest(base64Image: String, languageTag: String = "en"): ChatRequest {
+        val systemMessage = Message(
+            role = "system",
+            content = json.encodeToJsonElement(labelSystemPrompt(languageTag))
+        )
+        val userContent = listOf(
+            ContentPart(
+                type = "image_url",
+                imageUrl = ImageUrl("data:image/jpeg;base64,$base64Image")
+            ),
+            ContentPart(type = "text", text = "Read this nutrition label.")
+        )
+        val userMessage = Message(
+            role = "user",
+            content = json.encodeToJsonElement(userContent)
+        )
+        return ChatRequest(models = MODELS_IMAGE, messages = listOf(systemMessage, userMessage), maxTokens = MAX_TOKENS)
     }
 
     fun buildTextAnalysisRequest(foodName: String, languageTag: String = "en"): ChatRequest {
@@ -90,6 +127,6 @@ object ChatRequestBuilder {
             role = "user",
             content = json.encodeToJsonElement("Analyze this food: $foodName")
         )
-        return ChatRequest(models = MODELS_TEXT, messages = listOf(systemMessage, userMessage))
+        return ChatRequest(models = MODELS_TEXT, messages = listOf(systemMessage, userMessage), maxTokens = MAX_TOKENS)
     }
 }

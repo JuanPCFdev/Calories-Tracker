@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -112,11 +113,15 @@ fun AddFoodScreen(
     }
 
     val imageCaptureUseCase = remember { ImageCapture.Builder().build() }
-    val selectedTabIndex = if (uiState.inputMode == InputMode.CAMERA) 0 else 1
+    val selectedTabIndex = when (uiState.inputMode) {
+        InputMode.CAMERA -> 0
+        InputMode.LABEL -> 1
+        InputMode.TEXT -> 2
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
-            title = { Text("Add Food") },
+            title = { Text(stringResource(R.string.add_food)) },
             navigationIcon = {
                 IconButton(onClick = onNavigateBack) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
@@ -127,24 +132,32 @@ fun AddFoodScreen(
             Tab(
                 selected = selectedTabIndex == 0,
                 onClick = { viewModel.setInputMode(InputMode.CAMERA) },
-                text = { Text("Camera") },
+                text = { Text(stringResource(R.string.addfood_tab_camera)) },
                 icon = { Icon(Icons.Filled.CameraAlt, contentDescription = null, modifier = Modifier.size(18.dp)) }
             )
             Tab(
                 selected = selectedTabIndex == 1,
+                onClick = { viewModel.setInputMode(InputMode.LABEL) },
+                text = { Text(stringResource(R.string.addfood_tab_label)) },
+                icon = { Icon(Icons.Filled.Receipt, contentDescription = null, modifier = Modifier.size(18.dp)) }
+            )
+            Tab(
+                selected = selectedTabIndex == 2,
                 onClick = { viewModel.setInputMode(InputMode.TEXT) },
-                text = { Text("By Name") },
+                text = { Text(stringResource(R.string.addfood_tab_text)) },
                 icon = { Icon(Icons.Filled.Search, contentDescription = null, modifier = Modifier.size(18.dp)) }
             )
         }
 
         Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
             when (uiState.inputMode) {
-                InputMode.CAMERA -> {
+                InputMode.CAMERA, InputMode.LABEL -> {
                     if (hasCameraPermission) {
                         CameraPreviewContent(
                             imageCaptureUseCase = imageCaptureUseCase,
                             uiState = uiState,
+                            hint = if (uiState.inputMode == InputMode.LABEL)
+                                stringResource(R.string.addfood_label_hint) else null,
                             onCapture = { bitmap -> viewModel.onCaptureImage(bitmap) },
                             onReset = viewModel::reset
                         )
@@ -181,7 +194,11 @@ fun AddFoodScreen(
                         CircularProgressIndicator(color = Color.White)
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Analyzing food…",
+                            text = stringResource(
+                                if (uiState.inputMode == InputMode.LABEL)
+                                    R.string.addfood_analyzing_label
+                                else R.string.addfood_analyzing_food
+                            ),
                             color = Color.White,
                             style = MaterialTheme.typography.bodyLarge
                         )
@@ -197,6 +214,7 @@ fun AddFoodScreen(
 private fun CameraPreviewContent(
     imageCaptureUseCase: ImageCapture,
     uiState: AddFoodUiState,
+    hint: String? = null,
     onCapture: (Bitmap) -> Unit,
     onReset: () -> Unit
 ) {
@@ -204,6 +222,21 @@ private fun CameraPreviewContent(
 
     Box(modifier = Modifier.fillMaxSize()) {
         CameraPreviewView(imageCaptureUseCase)
+
+        // Hint (e.g. "apuntá a la tabla nutricional") — solo cuando aplica
+        if (hint != null) {
+            Text(
+                text = hint,
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .background(Color.Black.copy(alpha = 0.6f))
+                    .padding(12.dp)
+            )
+        }
 
         // Bottom controls bar
         Column(

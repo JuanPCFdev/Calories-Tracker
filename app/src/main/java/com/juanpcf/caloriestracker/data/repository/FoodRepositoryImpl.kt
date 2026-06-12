@@ -45,6 +45,13 @@ class FoodRepositoryImpl @Inject constructor(
         parseAiFood(ChatRequestBuilder.buildTextAnalysisRequest(foodName, lang))
     }
 
+    override suspend fun recognizeFoodFromLabel(bitmap: Bitmap): Result<Food> = runCatching {
+        val lang = preferencesRepository.preferences.first().language.tag
+        // Mayor resolución que el flujo de foto: la letra chica de una tabla nutricional no se lee a 800px.
+        val base64 = ImageUtils.bitmapToBase64(bitmap, maxDimension = 1280, quality = 85)
+        parseAiFood(ChatRequestBuilder.buildLabelAnalysisRequest(base64, lang))
+    }
+
     private suspend fun parseAiFood(request: ChatRequest): Food {
         val response = openRouterApi.analyzeFood(request)
         if (response.error != null) {

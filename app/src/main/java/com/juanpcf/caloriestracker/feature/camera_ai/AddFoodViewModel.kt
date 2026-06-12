@@ -7,6 +7,7 @@ import com.juanpcf.caloriestracker.core.util.NetworkMonitor
 import com.juanpcf.caloriestracker.domain.model.Food
 import com.juanpcf.caloriestracker.domain.usecase.food.RecognizeFoodFromImageUseCase
 import com.juanpcf.caloriestracker.domain.usecase.food.RecognizeFoodFromTextUseCase
+import com.juanpcf.caloriestracker.domain.usecase.food.RecognizeNutritionLabelUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +22,7 @@ import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 
 enum class CaptureState { IDLE, CAPTURING, ANALYZING, DONE, ERROR }
-enum class InputMode { CAMERA, TEXT }
+enum class InputMode { CAMERA, LABEL, TEXT }
 
 data class AddFoodUiState(
     val inputMode: InputMode = InputMode.CAMERA,
@@ -41,6 +42,7 @@ sealed interface AddFoodUiEvent {
 class AddFoodViewModel @Inject constructor(
     private val recognizeFoodFromImage: RecognizeFoodFromImageUseCase,
     private val recognizeFoodFromText: RecognizeFoodFromTextUseCase,
+    private val recognizeNutritionLabel: RecognizeNutritionLabelUseCase,
     private val networkMonitor: NetworkMonitor
 ) : ViewModel() {
 
@@ -79,10 +81,14 @@ class AddFoodViewModel @Inject constructor(
         val current = _uiState.value
         if (current.captureState == CaptureState.CAPTURING ||
             current.captureState == CaptureState.ANALYZING) return
+        // La cámara se comparte entre foto de comida y tabla nutricional; el modo decide el análisis.
+        val isLabel = current.inputMode == InputMode.LABEL
         _uiState.update { it.copy(captureState = CaptureState.CAPTURING, error = null) }
         viewModelScope.launch {
             _uiState.update { it.copy(captureState = CaptureState.ANALYZING) }
-            runAnalysis { recognizeFoodFromImage(bitmap) }
+            runAnalysis {
+                if (isLabel) recognizeNutritionLabel(bitmap) else recognizeFoodFromImage(bitmap)
+            }
         }
     }
 

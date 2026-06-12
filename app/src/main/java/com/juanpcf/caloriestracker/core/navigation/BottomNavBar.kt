@@ -47,7 +47,11 @@ fun CaloriesTrackerBottomBar(navController: NavController) {
                 selected = selected,
                 onClick = {
                     navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) { saveState = true }
+                        // Popear hasta el inicio del grafo de tabs (Home), NO hasta la raíz del
+                        // NavHost: tras el login, AuthGraph se elimina del back stack y popUpTo a un
+                        // destino ausente no popea nada, dejando el stack y el saveState/restoreState
+                        // inconsistentes (la tab cambia pero la pantalla anterior se queda).
+                        popUpTo(Home) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
